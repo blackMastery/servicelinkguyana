@@ -1,9 +1,8 @@
 import types from './actionTypes';
-import fetch from "isomorphic-unfetch";
 import { apiCaller } from '../api'
 
 
-const baseURL = `http://localhost:3000`
+
 
 const pathClient = `/api/v1/client`
 
@@ -64,35 +63,32 @@ export const loaded_jobs = (page, limit) =>{
     return function (dispatch){
 
          dispatch({type: types.FETCHING_JOBS})
-        return fetch(`http://localhost:3000/api/v1/client/jobslist?page=${page}&limit=${limit}`)
+        return apiCaller(`/api/v1/client/jobslist?page=${page}&limit=${limit}`)
         .then(
-            res =>{
+            json =>{
                 
-                 dispatch({type: types.FETCHING_JOBS})
-                 return res.json()
-                } ,
-            error => {
+                   dispatch({ type: types.FETCHING_JOBS });
+                  return dispatch( add_jobs(json) )
+                })
+                .catch((error) => {
+                    
+                    dispatch({type: types.FETCHING_JOBS})
+                    console.log(error)
+                })
                 
-                dispatch({type: types.FETCHING_JOBS})
-                console.log(error)
-            }
-            )
-            .then(json => dispatch( add_jobs(json) ) )
 
     }
 }
 
 export const updateEdu = (id, data) => {
     return function (dispatch) {
-        return fetch(`${baseURL}/api/v1/client/education/${id}`,{
+        return apiCaller(`/api/v1/client/education/${id}`,{
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
         })
-        .then(res=> res.json(),
-        error=>console.log(error))
         .then(json => dispatch(add_education(json)))
 
     }
@@ -111,20 +107,13 @@ export const add_employment = ({employment}) => ({
 export const addEmp = (id, data) => {
     console.log(data)
     return function (dispatch) {
-        return fetch(`${baseURL}/api/v1/client/employment/${id}`, {
+        return apiCaller(`/api/v1/client/employment/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
         })
-        .then( (res) => {
-            return res.json()
-        },
-        (error) => {
-            console.log(error)
-        }
-        )
         .then(json => dispatch(add_employment(json)))
     }
 }
@@ -140,30 +129,6 @@ export const addEmp = (id, data) => {
 
 
 
-
-export const userUpdate = (path, data, action) => {
-    console.log(data)
-
-    return async function (dispatch) {
-try   {
-        const res = await fetch(`${baseURL}${path}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-
-        const data =await res.json()
-       return dispatch(action(data))
-
-    } catch(error) {
-
-        console.log(error)
-    }
-
-}
-}
 
 
 

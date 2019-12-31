@@ -2,6 +2,11 @@ import fetch from "isomorphic-unfetch";
 
 let baseUrl = 'http://localhost:3000'
 
+
+if (process.env.NODE_ENV !== "development") {
+    baseUrl = "https://enigmatic-bayou-54073.herokuapp.com"
+}
+
 export const login = async (path, data) =>{
     try{
         const res = await postData(baseUrl+path, data)

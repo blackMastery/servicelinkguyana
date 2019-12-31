@@ -30,6 +30,7 @@ export default () =>{
   const [show, setShow] = useState(false);
   const showModel = () => setShow(true);
   const closeModel = () => setShow(false);
+  console.log(process.env.NODE_ENV);
 
 return ( 
 <Layout>

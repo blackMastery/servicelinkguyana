@@ -10,7 +10,6 @@ import {
   deleteEmpAction,
   addEmp,
   add_employment,
-  userUpdate
 } from "../../actions/action";
 import ModalContainer from "../Modals/modalContainer";
 
@@ -181,7 +180,6 @@ user: state.user
 const mapDispatchToProps = dispatch => ({
   deleteEmployment: bindActionCreators(deleteEmpAction, dispatch),
   addEmployment: bindActionCreators(addEmp, dispatch),
-  updateEmp: bindActionCreators(userUpdate, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EmploymentHistory);

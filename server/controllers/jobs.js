@@ -12,7 +12,6 @@ const User = require('../models/user')
 
 
 
-// exports.createJob = factory.createOne(Job);
 
 
 exports.createJob = catchAsync(async (req, res, next) => {
@@ -118,7 +117,7 @@ exports.getAllJob = catchAsync(async (req, res, next) => {
             console.log(req.query, skip)
             query = query.skip(skip).limit(limit);
             if(req.query.page){
-                if(skip  >= numofJobs) throw new Error('this page does not exist')
+                if(skip  >= numofJobs)  return next (AppError("No Jobs on this page yete", 404));
             }
 
             // sorting 

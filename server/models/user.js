@@ -45,7 +45,7 @@ const education = new mongoose.Schema({
 })
 
 
-
+const skill  = new mongoose.Schema({name:String})
 
 const userSchema = new mongoose.Schema({
     firstname: {
@@ -108,12 +108,7 @@ const userSchema = new mongoose.Schema({
         select: false
     },
     education: [education],
-    skills: [{
-        name:{
-        type: String,
-        unique: true
-    }
-}],
+    skills: [skill],
     availability: {
         type: String,
         enum: {

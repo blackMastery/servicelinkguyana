@@ -52,16 +52,16 @@ if(process.env.NODE_ENV  == 'production'){
     .then(() => console.log('DB connection successful!'));
 
   }else{
-  console.log(process.env.LOCAl_DB);
+  console.log(DB);
     
   mongoose
-    .connect(process.env.LOCAl_DB, {
+    .connect(DB, {
       useNewUrlParser: true,
-       useUnifiedTopology: true
+      useUnifiedTopology: true
       // useCreateIndex: true,
       // useFindAndModify: false
     })
-    .then(() => console.log('DB connection successful!'));
+    .then(() => console.log("DB connection successful!"));
 
 } 
 

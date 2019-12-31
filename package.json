@@ -8,7 +8,7 @@
     "dev": "next",
     "build": "next build",
     "start": "node ./server/app.js",
-    "dev:server": "node ./server/app.js"
+    "dev:server": "nodemon ./server/app.js"
   },
   "keywords": [],
   "author": "",

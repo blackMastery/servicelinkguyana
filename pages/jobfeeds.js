@@ -4,77 +4,131 @@ import { Button } from 'react-bootstrap';
 import Layout from '../layout';
 import { Row, Col, Container } from 'react-bootstrap';
 import JobSearch from '../components/Search/jobsearch'
+import { connect } from "react-redux";
+
+import { bindActionCreators } from "redux";
+import fetch from "isomorphic-unfetch";
+import { Paper, AddBtn, SaveBtn,
+   SecondaryBtn, JobButton, PrimaryBtn } from '../components/utils';
+
+import { loaded_jobs } from '../actions/action'
+import JobPagination from '../components/Pagination/pagination';
+
+
+
 
 
 import JobCard from '../components/jobCard';
 
-const jobs =[ {
-    title:'Laravel Expert needed in several projects',
-    description:`I have a ton of projects that I need help with.
-Most of them are related to Laravel and Javascript skills.
-So, I need someone who can help me out`,
-    proposals: 12,
-    spent: '5k',
-    location:'linden',
-    est:'10 min',
-    skills: ['node.js', 'socket.io', 'typescript', 'angular', 'rxjs',]
-
-},
-
- {
-     title: 'Data Visualization Expert To Create Sales Dashboards',
-     description: `Looking to use a sales dashboard platform like dash this, klipfolio, google data studio, or supermetrics, or open to something more custom in Google Sheets.
-The perfect candidate will have extensive experience building sales dashboards, 
-relevant examples in their portfolio, and provide business analysis and reporting insights.`,
-        proposals: 13,
-        spent: '5k',
-        location: 'linden',
-        est: '10 min',
-        skills: ['node.js', 'socket.io', 'typescript', 'angular',]
-
-    },
-
-     {
-         title: 'Need developer to create Sports stat API website',
-         description: `Idea for website: Website will be a simpler/cleaner/modern version of 
-         gamescreener.com where users can find games based on data. Would prefer if you
-          would use React and Firebase if possible but open to other ideas such as MongoDB.
-          `,
-        proposals: 12,
-        spent: '1200',
-        location: 'linden',
-        est: '5 hours',
-        skills: ['node.js', 'socket.io', 'typescript', 'angular', 'rxjs',]
-
-    }
-
-]
 
 
 
 
 
-export default () => (
-    <Layout>
-        <Container>
-            <Row>
-                <Col md={{ span: 3, offset: 3 }}>
-                    <h2>Jobs Feeds</h2>
-                </Col>
-            </Row>
-             <Row>
-                 <Col md={3}>
-                    <h2>Categories </h2>
-                 </Col>
-                <Col md={9}>
-                    <JobSearch/>
-                    {
-                        jobs.map((job) => (<JobCard {...job} />) )
-                    }
-                </Col>
-             </Row>
-        </Container>
 
-        
-    </Layout>
-)
+
+
+ class JobFeeds extends React.Component {
+                 constructor(props){
+                    super(props)
+                   this.pageChange = this.pageChange.bind(this)
+                 }
+            
+                componentDidMount(){
+                  const { jobs, loadJobs }  = this.props
+                  loadJobs(1,5)                  
+                }
+
+               pageChange(page){
+                  const { loadJobs }  = this.props
+
+                  loadJobs(page,5)
+                }
+                 render() {
+                   const { remaining, numofJobs, page, resultsLength } = this.props
+                   const { _jobs } = this.props;
+                   const pageData = { remaining, numofJobs, page, resultsLength }
+                   if(!_jobs) return null
+                  //  console.log("from state", _jobs, { remaining, numofJobs, page, resultsLength })
+                   return (
+                     <Layout>
+                       <Container>
+                         <Row>
+                           <Col md={{ span: 3, offset: 3 }}>
+                             <h2 id="jobs" >Find Work</h2>
+                           </Col>
+                         </Row>
+                         <Row>
+                           <Col md={3}>
+                             <h2>Categories</h2>
+                           </Col>
+                           <Col md={9}>
+
+                             <JobSearch />
+                             {_jobs.map((job, idx) => (
+                               <JobCard
+                                 {...job}
+                                 key={idx}
+                               />
+                             ))} 
+                           </Col>
+                         </Row>
+
+
+                              <Row>
+                                <Col md={3}>
+                                  </Col>
+                                <Col md={9}>
+
+                             <JobPagination data={pageData} pageChange={this.pageChange} />
+
+
+                                </Col>
+                              </Row>
+                       </Container>
+                     </Layout>
+                   );
+                 }
+               }
+
+
+const mapStateToProps = (state) => ({
+  _jobs: state.jobs.jobs,
+  remaining: state.jobs.remaining,
+  numofJobs: state.jobs.numofJobs,
+  resultsLength: state.jobs.resultsLength,
+  page: state.jobs.page
+})
+
+
+
+const mapDispatchToProps = ( dispatch ) => ({
+  loadJobs: bindActionCreators(loaded_jobs, dispatch)
+})
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(JobFeeds)
+
+
+
+/**
+ * {
+            "skills": [],
+            "interviewing": 0,
+            "invitesSent": 0,
+            "proposals": 0,
+            "close": false,
+            "_id": "5dfae7a07950ea07e061d03c",
+            "title": "machine learing e-com npl,................",
+            "description": "All the pages on your site look more or less the same. There's a chrome window, a common base layer, and you just want to change what's inside.",
+            "paymentStyle": "fixed price",
+            "experienceLevel": "entry",
+            "jobType": "one time project",
+            "client": "5df7ce031d853e3be469c416",
+            "cost": 26000,
+            "duration": "three weeks",
+            "hourlyRate": "More than 30 hr/week",
+            "createdAt": "2019-12-19T02:59:44.326Z",
+            "__v": 0
+        },
+ */

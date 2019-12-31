@@ -41,6 +41,7 @@ const mlab = 'mongodb://blogdata:password@ds239387.mlab.com:39387/blogdata29';
 
 
 if(process.env.NODE_ENV  == 'production'){
+  console.log(process.env.PROD_MONGODB);
   mongoose
     .connect(process.env.PROD_MONGODB, {
       useNewUrlParser: true,
@@ -51,6 +52,7 @@ if(process.env.NODE_ENV  == 'production'){
     .then(() => console.log('DB connection successful!'));
 
   }else{
+  console.log(process.env.LOCAl_DB);
     
   mongoose
     .connect(process.env.LOCAl_DB, {

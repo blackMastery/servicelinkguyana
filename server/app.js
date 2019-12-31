@@ -40,7 +40,7 @@ const mlab = 'mongodb://blogdata:password@ds239387.mlab.com:39387/blogdata29';
 
 
 
-if(process.env.NODE_ENV === 'PRODUCTION'){
+if(process.env.NODE_ENV  == 'production'){
   mongoose
     .connect(process.env.PROD_MONGODB, {
       useNewUrlParser: true,

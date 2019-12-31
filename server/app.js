@@ -76,6 +76,49 @@ if(process.env.NODE_ENV  == 'production'){
 
 
 
+
+const protected = async  (req, res, next) => {
+  if (req.cookies.jwt) {
+    try {
+      // 1) verify token
+      const decoded = await promisify(jwt.verify)(
+        req.cookies.jwt,
+        process.env.JWT_SECRET
+      );
+
+      // 2) Check if user still exists
+      const currentUser = await User.findById(decoded.id);
+      if (!currentUser) {
+        // return next();
+        return app.render(req, res, "/", req.query);
+      }
+
+      // 3) Check if user changed password after the token was issued
+      // if (currentUser.changedPasswordAfter(decoded.iat)) {
+      //   return next();
+      // }
+
+      // THERE IS A LOGGED IN USER
+      res.locals.user = currentUser;
+
+      return next();
+    } catch (err) {
+      // return next();
+      return app.render(req, res, "/", req.query);
+    }
+  }
+  next();
+  console.log(req.cookies);
+  next();
+};
+
+
+
+
+
+
+
+
 app.prepare().then(() => {
   const server = express();
 
@@ -89,46 +132,9 @@ app.prepare().then(() => {
 
 
   
-  //  server.get("/jobfeeds", (req, res) => {
-    //    return app.render(req, res, "/jobfeeds", req.query);
-    //  });
+    server.get("/jobfeeds", protected);
 
-    // server.get('/profile', async (req, res, next) => {
-    //   if (req.cookies.jwt) {
-    //     try {
-    //       // 1) verify token
-    //       const decoded = await promisify(jwt.verify)(
-    //         req.cookies.jwt,
-    //         process.env.JWT_SECRET
-    //       );
-
-    //       // 2) Check if user still exists
-    //       const currentUser = await User.findById(decoded.id);
-    //       if (!currentUser) {
-    //         // return next();
-    //         return app.render(req, res, "/", req.query);
-    //       }
-
-    //       // 3) Check if user changed password after the token was issued
-    //       // if (currentUser.changedPasswordAfter(decoded.iat)) {
-    //       //   return next();
-    //       // }
-
-    //       // THERE IS A LOGGED IN USER
-    //       res.locals.user = currentUser;
-
-    //       return next();
-    //     } catch (err) {
-    //       // return next();
-    //         return app.render(req, res, "/", req.query);
-
-    //     }
-    //   }
-    //   next();
-    //   console.log(req.cookies)
-    //   next()
-
-    // })
+    server.get("/profile", protected);
     
     server.all("*", (req, res) => {
       return handle(req, res);

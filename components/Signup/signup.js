@@ -5,6 +5,7 @@ import { Paper, AddBtn, SaveBtn, SecondaryBtn, JobButton } from '../../component
 
 
 
+
 const PrimaryBtn = styled(JobButton)`
 background-color: ${ props => props.theme.colors.primary};
 color: white;
@@ -102,7 +103,7 @@ async handler(e){
         })
     }
     else if(provider){
-        role ='provide';
+        role ='provider';
         this.setState({
             selectAccount: ''
         })
@@ -116,8 +117,9 @@ async handler(e){
 
     const userData = { email, firstname, lastname, 
         password, passwordConfirm:confirmPassword, role} 
-    this.props.postAndRedirect(userData)
 
+
+    this.props.postAndRedirect(userData)
 
 
 

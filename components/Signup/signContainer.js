@@ -1,22 +1,45 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
+
 import { Row, Col, Container, Form, Modal } from 'react-bootstrap';
 import { Paper, AddBtn, SaveBtn, SecondaryBtn, JobButton } from '../../components/utils';
 import Registration from './signup'
-import {register} from '../../api'
+// import {register} from '../../api'
 import { useRouter } from 'next/router'
 
+import { Register } from '../../actions/action'
+
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
 
-export default () => {
+
+const SignUpContainer = ({ register }) => {
     const router = useRouter()
     const postAndRedirect = async (data) => {
-    const user = await register('/api/v1/client/signup',data)
-    console.log(user)
-    router.push('/jobfeeds')
+        try {
+            await register(data);
+            router.push('/jobfeeds')
+
+        } catch(error){
+            console.log(error)
+            router.push('/')
+
+        }
+
+        // console.log(user)
+
 
     }
     return (
         <Registration postAndRedirect={postAndRedirect} />
     )
 }
+
+const mapStateToProps = ( state ) => ({
+
+})
+
+const mapDispatchToProps = ( dispatch ) => ({
+    register: bindActionCreators(Register, dispatch)
+})
+export default connect(null, mapDispatchToProps)(SignUpContainer)

@@ -7,8 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "next",
     "build": "next build",
-    "start": "next start",
-    "dev:server": "nodemon ./server/app.js"
+    "start": "node ./server/app.js",
+    "dev:server": "node ./server/app.js"
   },
   "keywords": [],
   "author": "",

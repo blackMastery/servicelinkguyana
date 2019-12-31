@@ -36,16 +36,32 @@ process.on('uncaughtException', err => {
 
 const DB = `mongodb+srv://kevon:passlock30@school-jjtxd.mongodb.net/slg`;
 const dburl = 'mongodb://localhost/test'
+const mlab = 'mongodb://blogdata:password@ds239387.mlab.com:39387/blogdata29';
 
-mongoose
-  .connect(dburl, {
-    useNewUrlParser: true,
-     useUnifiedTopology: true
-    // useCreateIndex: true,
-    // useFindAndModify: false
-  })
-  .then(() => console.log('DB connection successful!'));
 
+
+if(process.env.NODE_ENV === 'PRODUCTION'){
+  mongoose
+    .connect(process.env.PROD_MONGODB, {
+      useNewUrlParser: true,
+       useUnifiedTopology: true
+      // useCreateIndex: true,
+      // useFindAndModify: false
+    })
+    .then(() => console.log('DB connection successful!'));
+
+  }else{
+    
+  mongoose
+    .connect(process.env.LOCAl_DB, {
+      useNewUrlParser: true,
+       useUnifiedTopology: true
+      // useCreateIndex: true,
+      // useFindAndModify: false
+    })
+    .then(() => console.log('DB connection successful!'));
+
+} 
 
 
 // const uri = "mongodb+srv://kevon:passlock30@school-jjtxd.mongodb.net/slg?retryWrites=true&w=majority";

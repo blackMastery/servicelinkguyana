@@ -51,14 +51,12 @@ const userSchema = new mongoose.Schema({
     firstname: {
         type: String,
         required: [true, "must have a firstname"],
-        unique: true,
         trim: true,
         maxlength: [40, "A firstname must have less or equal then 40 characters"]
     },
     lastname: {
         type: String,
         required: [true, "must have a lastname"],
-        unique: true,
         trim: true,
         maxlength: [40, "A lastname must have less or equal then 40 characters"]
     },

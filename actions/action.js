@@ -247,3 +247,23 @@ export const DeleteSkillAction = (userid, skillid) => {
 }
 
 
+
+
+
+export const Register = ( data ) => {
+    const path = `${pathClient}/signup`;
+    
+    return function (dispatch) {
+        return apiCaller(path,{
+            method: "POST",
+            headers : {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then( json =>{
+            return dispatch(login_user(json))
+        } )
+
+    }
+}

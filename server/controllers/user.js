@@ -17,7 +17,7 @@ const catchAsync = require('../utils/catchAsync')
  
   });
 
-    exports.updateDesc = factory.updateOne(User)
+exports.updateDesc = factory.updateOne(User)
 
 
 

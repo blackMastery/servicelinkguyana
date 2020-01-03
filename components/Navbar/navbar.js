@@ -6,7 +6,7 @@ import Link from "next/link";
 
 
 import { useRouter } from 'next/router'
-import { Button, Popover, PopoverHeader, PopoverBody } from 'reactstrap';
+import { Button, Popover, PopoverHeader, PopoverBody, UncontrolledPopover} from 'reactstrap';
 import ListGroup from "react-bootstrap/ListGroup";
 
 import Navbar from 'react-bootstrap/Navbar'
@@ -80,14 +80,18 @@ const NavBar =  (props) => {
 
   }else{
     avator = (
-      <> 
-      <Avator id="Popover1" className="ml-auto" />
-        <Popover
+      <>
+        <Avator id="Popover1" className="ml-auto" />
+        <UncontrolledPopover
+          trigger="legacy"
           placement="bottom"
-          isOpen={popoverOpen}
+          // isOpen={popoverOpen}
           target="Popover1"
-          toggle={toggle}
+          // toggle={toggle}
         >
+
+        {/* <Popover
+        > */}
           <PopoverHeader>
             {user.firstname} {user.lastname}
           </PopoverHeader>
@@ -96,10 +100,10 @@ const NavBar =  (props) => {
             <ListGroup.Item>Profile Veiw </ListGroup.Item>
           </Link>
           <ListGroup.Item onClick={_logout}>Log-out </ListGroup.Item>
-        </Popover>
+        {/* </Popover> */}
+        </UncontrolledPopover>
       </>
-    
-    )
+    );
 
     searchBar = (<Form inline >
       <FormControl type="text" placeholder="Search" className="mr-sm-2" />

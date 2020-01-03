@@ -137,10 +137,7 @@ class EmploymentHistory extends React.Component {
       console.log(data)
       const  { user, addEmployment } = this.props; 
       addEmployment(user._id, data);
-      
-
-    // updateEmp(`/api/v1/client/employment/${user._id}`, data, add_employment)
-  };
+  }
 
   render () {
    const  { empHistory, deleteEmployment, user, addEmployment, updateEmp } = this.props; 

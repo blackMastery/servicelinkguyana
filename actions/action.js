@@ -51,10 +51,31 @@ export const islogin = val => ({
     val
 })
 
-export const updateUserInfo = userData => ({
+export const updateUserInfo = ({data:{data}}) => ({
     type: types.UPDATE_USER_INFO,
-    userData
+    user: {...data}
 })
+
+
+
+
+
+export const updateUser = (id, data) => {
+    return function (dispatch){
+        return apiCaller(`${pathClient}/updateclientinfo/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        }).then(json => {
+          console.log(json);
+          return dispatch(updateUserInfo(json));
+        });
+    }
+}
+
+
 
 
 
@@ -81,6 +102,7 @@ export const loaded_jobs = (page, limit) =>{
 }
 
 export const updateEdu = (id, data) => {
+    console.log(id, data)
     return function (dispatch) {
         return apiCaller(`/api/v1/client/education/${id}`,{
             method: 'PUT',
@@ -105,7 +127,7 @@ export const add_employment = ({employment}) => ({
 });
 
 export const addEmp = (id, data) => {
-    console.log(data)
+    // console.log(data)
     return function (dispatch) {
         return apiCaller(`/api/v1/client/employment/${id}`, {
             method: 'PUT',
@@ -143,7 +165,7 @@ export const deleteEducation = (userid, eduid) => {
             redirect: 'follow'
         })
         .then(res=>{
-            console.log(res)
+            // console.log(res)
             return dispatch(remove_education(eduid))
         
         })

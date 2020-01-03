@@ -124,6 +124,7 @@ app.prepare().then(() => {
 
   // Body parser, reading data from body into req.body
   server.use(express.json({ limit: "10kb" }));
+
   server.use(cookieParser());
   server.use(morgan('dev'))
 
@@ -132,15 +133,16 @@ app.prepare().then(() => {
 
 
   
-    server.get("/jobfeeds", protected);
+  server.get("/jobfeeds", protected);
 
-    server.get("/profile", protected);
+  server.get("/profile", protected);
+    
+  server.use(globalErrorHandle)
     
     server.all("*", (req, res) => {
       return handle(req, res);
     });
     
-  // server.use(globalErrorHandle)
   server.listen(port, err => {
     if (err) throw err;
     console.log(`> Ready on http://localhost:${port}`);

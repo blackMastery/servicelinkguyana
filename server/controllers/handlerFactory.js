@@ -53,6 +53,10 @@ exports.deleteOne = Model =>
 
     exports.updateOne = Model =>
       catchAsync(async (req, res, next) => {
+
+          if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+            return next(new AppError("invalid id", 404));
+          }
         const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
           new: true,
           runValidators: true
@@ -64,8 +68,6 @@ exports.deleteOne = Model =>
 
         res.status(200).json({
           status: "success",
-          data: {
-            data: doc
-          }
+          user:{...doc._doc }
         });
       });

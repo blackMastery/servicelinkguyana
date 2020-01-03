@@ -108,7 +108,11 @@ const EducationHistory = ({
         <EduView key={idx} education={education} user={user} _handler={formHandler} deleteHandler={deleteHandler} />
       ))}
 
-      <EduModal title="Add Education" _handler={formHandler} show={show} closeModal={closeModal} />
+      <EduModal
+       title="Add Education"
+       _handler={formHandler} 
+       show={show} 
+       closeModal={closeModal} />
     </Container>
   );
 };

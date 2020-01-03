@@ -27,9 +27,9 @@ import styled, { css } from "styled-components";
   font-weight: 500;
   font-size: 18px;
   line-height: 21px;
-  /* identical to box height */
   color: #000000;
   margin-bottom: 0px;
+  text-transform: capitalize;
 
 `;
 

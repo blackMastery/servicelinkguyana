@@ -31,6 +31,8 @@ const user = (state = initialState, action ) => {
             return initialState
         case types.ADD_EMPLOYMENT:
             return Object.assign({}, state, { employmentHistory: action.employmentHistory} );
+        case types.UPDATE_USER_INFO:
+            return Object.assign({}, state, {...action.user})
         case types.ADD_EDUCATION:
             return Object.assign({}, state, {education: [...action.education]})
         case types.DELETE_EMPLOYMENT:

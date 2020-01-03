@@ -6,14 +6,15 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 
-export default ({ _handler, closeModal}) => {
+export default ({ _handler}) => {
   const [_school, setSchool] = useState("");
   const [_periodFrom, setFrom] = useState("");
   const [_periodTo, setTo] = useState("");
   const [_degree, setDegree] = useState("");
   const [_area, setArea] = useState("");
   const [_description, setDesc] = useState("");
-
+  const [validated, setValidated] = useState(false);
+  
   const handler = event => {
     const { name, value } = event.target;
     switch (name) {
@@ -44,19 +45,14 @@ export default ({ _handler, closeModal}) => {
     description: _description
   };
   _handler(education);
-  }
+}
 
 
   const handleSubmit = e => {
     e.preventDefault();
-    e.stopPropagation()
-    if (event.keyCode === 13) {
-      // event.preventDefault();
-      return
-    }
-
+    e.stopPropagation();
     _save()
-    closeModal()
+
   };
 
   const addMore = ( e ) =>{
@@ -65,7 +61,7 @@ export default ({ _handler, closeModal}) => {
    }
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} action="#">
       <Form.Group controlId="formBasicCompany">
         <Form.Label>School</Form.Label>
         <Form.Control
@@ -73,6 +69,7 @@ export default ({ _handler, closeModal}) => {
           name="school"
           placeholder="school name"
           value={_school}
+          required
           onChange={handler}
         />
       </Form.Group>
@@ -86,6 +83,7 @@ export default ({ _handler, closeModal}) => {
               name="from"
               placeholder="from"
               onChange={handler}
+            required
               value={_periodFrom}
             />
           </Col>
@@ -95,6 +93,7 @@ export default ({ _handler, closeModal}) => {
               placeholder="to"
               name="to"
               value={_periodTo}
+            required
               onChange={handler}
             />
           </Col>
@@ -108,6 +107,8 @@ export default ({ _handler, closeModal}) => {
           placeholder="degree name"
           name="degree"
           onChange={handler}
+          required
+
           value={_degree}
         />
       </Form.Group>
@@ -119,6 +120,8 @@ export default ({ _handler, closeModal}) => {
           placeholder="eg: computer science"
           name="area"
           onChange={handler}
+          required
+
           value={_area}
         />
       </Form.Group>
@@ -130,12 +133,13 @@ export default ({ _handler, closeModal}) => {
           rows="3"
           name="description"
           onChange={handler}
+          required
           value={_description}
         />
       </Form.Group>
       <Row>
         <Col>
-          <SecondaryBtn onClick={closeModal}>Cancel</SecondaryBtn>
+          <SecondaryBtn>Cancel</SecondaryBtn>
         </Col>
         <Col>
           <SecondaryBtn onClick={addMore}>Save and more</SecondaryBtn>

@@ -251,6 +251,39 @@ export const Register = ( data ) => {
         .then( json =>{
             return dispatch(login_user(json))
         } )
+        .catch(error=>{
+            console.log(error)
+        })
 
     }
+}
+
+
+
+const errorMessage = ({message}) => ({
+    type: types.LOGIN_ERROR,
+    message
+})
+export const userLogin = (data) => {
+    const path = `${pathClient}/login`;
+    return function (dispatch) {
+        return apiCaller(path, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        })
+          .then(json => {
+            if(!json.ok){
+                
+                return dispatch(errorMessage(json))  
+            }
+            return dispatch(login_user(json));
+          })
+          .catch(error => {
+            console.log(error);
+          });
+    }
+
 }

@@ -27,6 +27,7 @@ import EducationHistory from '../components/history/educationhistory'
 import EditDescription from '../components/editdescription'
 import EmploymentHistory from '../components/history/employmenthistory'
 import SkillColumn from '../components/skillsColumn'
+import AuthContainer from '../components/Auth/authContainer'
 
 
 
@@ -183,4 +184,4 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   updateUser: bindActionCreators(updateUserInfo, dispatch),
 })
-export default connect(mapStateToProps, mapDispatchToProps)(Profile)
+export default connect(mapStateToProps, mapDispatchToProps)( AuthContainer(Profile))

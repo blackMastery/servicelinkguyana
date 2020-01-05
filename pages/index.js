@@ -6,8 +6,10 @@ import { Paper, AddBtn, SaveBtn, SecondaryBtn, JobButton, PrimaryBtn } from '../
 import Link from "next/link";
 import Login from '../components/login';
 import Registration from '../components/Signup/signContainer'
+import { userLogin } from "../actions/action";
 
-
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 const Title = styled.h1`
   font-size: 50px;
   color: ${({ theme }) => theme.colors.primary};
@@ -26,7 +28,9 @@ const LinkText = styled(Link)`
 
 
 
-export default () =>{
+
+
+const Index = ( props ) =>{
   const [show, setShow] = useState(false);
   const showModel = () => setShow(true);
   const closeModel = () => setShow(false);
@@ -44,7 +48,7 @@ return (
       </Row>
       <hr/>
          <Col md="auto">
-            <Login setShow={setShow}/>
+            <Login {...props} setShow={setShow}/>
          </Col>
          </Paper>
        </Row>
@@ -63,3 +67,16 @@ return (
 </Layout>
 )
 }
+
+
+
+const mapStateToProps = state => ({
+  loginError: state.user.loginError,
+  isLogin: state.user.isLogin
+});
+
+const mapDispatchToProps = dispatch => ({
+  userLogin: bindActionCreators(userLogin, dispatch)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Index);

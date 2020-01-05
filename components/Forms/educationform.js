@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 
-export default ({ _handler}) => {
+export default ({ _handler, closeModal}) => {
   const [_school, setSchool] = useState("");
   const [_periodFrom, setFrom] = useState("");
   const [_periodTo, setTo] = useState("");
@@ -44,6 +44,13 @@ export default ({ _handler}) => {
     areaOfStudy: _area,
     description: _description
   };
+  setArea('')
+  setDegree('')
+  setDesc('')
+  setTo('')
+  setSchool('')
+  setFrom('')
+  
   _handler(education);
 }
 
@@ -52,6 +59,7 @@ export default ({ _handler}) => {
     e.preventDefault();
     e.stopPropagation();
     _save()
+    closeModal()
 
   };
 
@@ -93,7 +101,7 @@ export default ({ _handler}) => {
               placeholder="to"
               name="to"
               value={_periodTo}
-            required
+              required
               onChange={handler}
             />
           </Col>
@@ -139,7 +147,7 @@ export default ({ _handler}) => {
       </Form.Group>
       <Row>
         <Col>
-          <SecondaryBtn>Cancel</SecondaryBtn>
+          <SecondaryBtn onClick={closeModal}>Cancel</SecondaryBtn>
         </Col>
         <Col>
           <SecondaryBtn onClick={addMore}>Save and more</SecondaryBtn>

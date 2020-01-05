@@ -59,12 +59,18 @@ const EduView = (props) => {
 
   return (
     <Row>
-      <Col>
+      <Col className="mb-3">
+  <style jsx>{`
+  h2 {
+  text-transform: capitalize;
+  }
+  p {
+    text-transform: capitalize;
+    font-size: 22px;
+  }
+  `}</style>
         <h2>{education.school}</h2>
         <p>{education.areaOfStudy}</p>
-        <p>
-          {/* {period.from} - {period.to}{" "} */}
-        </p>
       </Col>
       <EditOverLay showModal={showModal} id={education._id} user={user} deleteHandler={deleteHandler}/>
       {/* <EduModal  {...education} title="Edit Education Detials" _handler={_handler} show={show} closeModel={closeModel} /> */}

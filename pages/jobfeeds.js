@@ -14,7 +14,7 @@ import { Paper, AddBtn, SaveBtn,
 import { loaded_jobs } from '../actions/action'
 import JobPagination from '../components/Pagination/pagination';
 
-
+import AuthContainer from '../components/Auth/authContainer'
 
 
 
@@ -97,7 +97,8 @@ const mapStateToProps = (state) => ({
   remaining: state.jobs.remaining,
   numofJobs: state.jobs.numofJobs,
   resultsLength: state.jobs.resultsLength,
-  page: state.jobs.page
+  page: state.jobs.page,
+  isLogin: state.user.isLogin
 })
 
 
@@ -107,7 +108,13 @@ const mapDispatchToProps = ( dispatch ) => ({
 })
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(JobFeeds)
+
+
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AuthContainer(JobFeeds));
 
 
 

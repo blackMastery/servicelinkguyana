@@ -34,6 +34,7 @@ const createSendToken = (user, statusCode, res) => {
   user.password = undefined;
 
   res.status(statusCode).json({
+    ok: true,
     status: 'success',
     token,
     ...user._doc
@@ -70,13 +71,25 @@ exports.login = catchAsync(async (req, res, next) => {
 
   // 1) Check if email and password exist
   if (!email || !password) {
-    return next(new AppError("Please provide email and password!", 400));
+    res.status(400)
+    .json({
+      statusCode: 400,
+      message: "Please provide email and password!"
+    })
+
   }
   // 2) Check if user exists && password is correct
   const user = await User.findOne({ email }).select("+password");
 
   if (!user || !(await user.correctPassword(password, user.password))) {
-    return next(new AppError("Incorrect email or password", 401));
+    // return next(new AppError("Incorrect email or password", 401));
+      res.status(401)
+      .json({
+        ok: false,
+        statusCode: 401,
+        message: "Incorrect email or password"
+      })
+
   }
 
   // 3) If everything ok, send token to client
@@ -99,7 +112,12 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   if (
     !(await user.correctPassword(req.body.passwordCurrent, user.password))
   ) {
-    return next(new AppError("Your current password is wrong.", 401));
+    // return next(new AppError("Your current password is wrong.", 401));
+    res.status(401).json({
+      ok: false,
+      statusCode: 401,
+      message: "Your current password is wrong."
+    });
   }
 
   // 3) If so, update password

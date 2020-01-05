@@ -4,6 +4,7 @@ import types from '../actions/actionTypes'
 const initialState = {
     status: "",
     isLogin: false,
+    loginError: "",
     token: "",
     "location": {
         "type": "",
@@ -33,6 +34,9 @@ const user = (state = initialState, action ) => {
             return Object.assign({}, state, { employmentHistory: action.employmentHistory} );
         case types.UPDATE_USER_INFO:
             return Object.assign({}, state, {...action.user})
+        
+        case types.LOGIN_ERROR:
+            return Object.assign({}, state, {loginError: action.message})
         case types.ADD_EDUCATION:
             return Object.assign({}, state, {education: [...action.education]})
         case types.DELETE_EMPLOYMENT:

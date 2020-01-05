@@ -128,21 +128,23 @@ app.prepare().then(() => {
   server.use(cookieParser());
   server.use(morgan('dev'))
 
+  // server.get("/profile", protected);
+  // server.get("/jobfeeds", protected);
   server.use("/api/v1/serviceprovider", serviceProvider);
   server.use("/api/v1/client", clientRoutes);
 
+  server.use(globalErrorHandle)
 
   
-  server.get("/jobfeeds", protected);
 
-  server.get("/profile", protected);
     
-  server.use(globalErrorHandle)
-    
+  
     server.all("*", (req, res) => {
       return handle(req, res);
     });
     
+
+
   server.listen(port, err => {
     if (err) throw err;
     console.log(`> Ready on http://localhost:${port}`);

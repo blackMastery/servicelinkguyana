@@ -4,64 +4,82 @@ import { bindActionCreators } from "redux";
 import { Row, Col, Container, Form, Modal } from 'react-bootstrap';
 import { useRouter } from 'next/router'
 
+const isServer = typeof window === 'undefined'
+
+import { Formik } from "formik";
+import * as Yup from "yup";
+
+
 // import Link from "next/link";
 // import styled from 'styled-components'
 
 
-import { login_user } from '../actions/action'
-import {login} from  '../api';
 import { Paper, JobButton, PrimaryBtn } from '../components/utils'
 
 
 const LoginForm = (props) => {
+
     const { handleSubmit, setShow } = props
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const handler = event => {
-        const { name, value } = event.target;
-        switch (name) {
-            case "email":
-                return setEmail(value);
-            case 'password':
-                return setPassword(value)
-            default:
-                return
-           
-        }
-    };
-
-    const _submit = (e) => {
-        e.preventDefault()
-         handleSubmit({ email, password })
-        // handleSubmit({ email:"kevon3000@yahoo.com",password:"password"})
-
-    } 
-
+     console.log(props.errorMessage)
+    
     return (
-        <Paper>
-        <Form onSubmit={_submit}>
-            <Form.Group controlId="formBasicEmail" >
+      <Formik
+        onSubmit={(values, { setSubmitting }) => {
+          console.log(values);
+          handleSubmit(values);
+        }}
+        validationSchema={Yup.object({
+          password: Yup.string().required("Required"),
+          email: Yup.string()
+            .email("Invalid email address")
+            .required("Required")
+        })}
+        initialValues={{
+          password: "",
+          email: ""
+        }}
+      >
+        {formik => (
+          <Paper>
+            <Form onSubmit={formik.handleSubmit}>
+              <Form.Group controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
-                <Form.Control required type="email" name="email" onChange={handler} placeholder="Enter email" value={email} />
-            </Form.Group>
-
-
-            <Form.Group controlId="formBasicPassword">
+                <Form.Control
+                  required
+                  type="email"
+                  name="email"
+                  placeholder="Enter email"
+                  {...formik.getFieldProps("email")}
+                  isValid={!formik.errors.email}
+                />
+              </Form.Group>
+              <span>{formik.errors.password}</span>
+              <Form.Group controlId="formBasicPassword">
                 <Form.Label>Password</Form.Label>
-                <Form.Control required type="password" name="password" onChange={handler} placeholder="Password" value={password} />
-            </Form.Group>
+                <Form.Control
+                  required
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  isValid={!formik.errors.password}
+                  {...formik.getFieldProps("password")}
+                />
 
+                <Form.Text className="text-muted">
+                  {props.errorMessage}
+                </Form.Text>
+              </Form.Group>
 
-            <JobButton variant="primary" type='submit'>
+              <JobButton variant="primary" type="submit">
                 Continue
-            </JobButton>
-            <hr />
-        </Form>
-            <PrimaryBtn onClick={setShow}>
-                Create An Account
-            </PrimaryBtn>
-        </Paper>
-    )
+              </JobButton>
+              <hr />
+            </Form>
+            <PrimaryBtn onClick={setShow}>Create An Account</PrimaryBtn>
+          </Paper>
+        )}
+      </Formik>
+    );
 }
 
 
@@ -85,31 +103,37 @@ const LoginForm = (props) => {
 
 
  const Login  = (props) => {
+   console.log(props);
+   if (!isServer) {
      const router = useRouter()
-   
-    async   function handleSubmit  (data){
-        console.log(data)
-        let path = '/api/v1/client/login';
-       const user =  await login(path, data)
-       console.log(user)
-       props.userLogin(user)
-       router.push('/jobfeeds')
+     if (props.isLogin) {
+       router.push("/jobfeeds");
+
+     }
+   }
+
+    async function handleSubmit  (data){
+      await props.userLogin(data);
+      router.push("/jobfeeds");
+
+        
     }
+    
     const { setShow } =  props
 
     
 
         return (
-            <LoginForm handleSubmit={handleSubmit} setShow={setShow}/>
-        )
+          <LoginForm
+            errorMessage={props.loginError}
+            handleSubmit={handleSubmit}
+            setShow={setShow}
+          />
+        );
 } 
 
 
 
 
-// const mapStateToProps = ( state ) => ({user})
-const mapDispatchToProps = (dispatch ) => ({
-    userLogin: bindActionCreators(login_user, dispatch),
-})
 
-export default connect(null, mapDispatchToProps)(Login)
+export default Login;

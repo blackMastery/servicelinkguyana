@@ -51,7 +51,16 @@ const EmpView = (props) => {
 
   return (
     <Row>
-      <Col>
+      <Col className="mb-3">
+        <style jsx>{`
+          h2 {
+          text-transform: capitalize;
+          }
+          p {
+            text-transform: capitalize;
+            font-size: 22px;
+          }
+        `}</style>
         <h2>{company}</h2>
         <p>{title}</p>
         <p>{description}</p>

@@ -291,31 +291,12 @@ export const EditIconBtn = ({ showModel }) => (
 )
 
 export const DeleteIconBtn = ({ _delete}) =>(
-  <svg
-    onClick={_delete}
-    width="31"
-    height="24"
-    viewBox="0 0 41 34"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <rect
-      x="8.00635"
-      y="19.1965"
-      width="25.4821"
-      height="11"
-      transform="rotate(-35.9363 8.00635 19.1965)"
-      fill="#F80000"
-    />
-    <path
-      d="M29 3.96539L33.5119 0.694933C33.9591 0.370805 34.5844 0.470549 34.9085 0.917717L40.1905 8.20475C40.5146 8.65192 40.4149 9.27718 39.9677 9.6013L35.4557 12.8718L29 3.96539Z"
-      fill="#F80000"
-    />
-    <path
-      d="M3.13973 29.3762L7.81041 20.3278L13.2483 28.1495L3.13973 29.3762Z"
-      fill="#F80000"
-    />
+  <svg onClick={_delete} width="29" height="22" viewBox="0 0 39 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M2 10H38L31.2131 42H9.37705L2 10Z" fill="#F80000" />
+    <line x1="-1.31134e-07" y1="6.5" x2="39" y2="6.5" stroke="#F80000" stroke-width="3" />
+    <line x1="10" y1="1.5" x2="29" y2="1.5" stroke="#F80000" stroke-width="3" />
   </svg>
+
 )
 
 

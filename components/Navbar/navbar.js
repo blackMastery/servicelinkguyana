@@ -121,7 +121,7 @@ const NavBar =  (props) => {
 
         <Navbar.Brand href="/jobfeeds">
           <Brand>
-            Sevice Link Guyana
+            Service Link Guyana
                     </Brand>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />

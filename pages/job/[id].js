@@ -9,6 +9,7 @@ import { bindActionCreators } from "redux";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import fetch from "isomorphic-unfetch";
+import { apiCaller } from "../../api";
 
 
 import {
@@ -121,15 +122,13 @@ render() {
 
 JobDetails.getInitialProps = async function (context) {
   const { id } = context.query;
-  const res = await fetch(`http://localhost:3000/api/v1/client/job/${id}`);
-  const {data} = await res.json();
-
-  // console.log(`Fetched show: ${job.title}`);
+  const res = await apiCaller(`/api/v1/client/job/${id}`
+  );
+  const { data } = res;
 
   return { job: data.data };
+
 };
-
-
 
 
 

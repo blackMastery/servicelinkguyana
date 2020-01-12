@@ -124,9 +124,9 @@ JobDetails.getInitialProps = async function (context) {
   const { id } = context.query;
   const res = await apiCaller(`/api/v1/client/job/${id}`
   );
-  const { data } = res;
+  const { job } = res;
 
-  return { job: data.data };
+  return { job };
 
 };
 

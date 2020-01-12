@@ -10,7 +10,7 @@ const mongoose = require('mongoose');
 const MongoClient = require("mongodb").MongoClient;
 
 
-const serviceProvider = require('./routes/serviceProvider')
+const serviceProvider = require('./routes/provider')
 const clientRoutes = require("./routes/clients");
 const cookieParser = require("cookie-parser");
 
@@ -53,9 +53,9 @@ if(process.env.NODE_ENV  == 'production'){
 
   }else{
   console.log(DB);
-    
+  
   mongoose
-    .connect(DB, {
+  .connect(DB, {
       useNewUrlParser: true,
       useUnifiedTopology: true
       // useCreateIndex: true,
@@ -66,51 +66,9 @@ if(process.env.NODE_ENV  == 'production'){
 } 
 
 
-// const uri = "mongodb+srv://kevon:passlock30@school-jjtxd.mongodb.net/slg?retryWrites=true&w=majority";
-// const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-// client.connect(err => {
-//   // const collection = client.db("test").collection("devices");
-//   // perform actions on the collection object
-//   client.close();
-// });
 
 
 
-
-const protected = async  (req, res, next) => {
-  if (req.cookies.jwt) {
-    try {
-      // 1) verify token
-      const decoded = await promisify(jwt.verify)(
-        req.cookies.jwt,
-        process.env.JWT_SECRET
-      );
-
-      // 2) Check if user still exists
-      const currentUser = await User.findById(decoded.id);
-      if (!currentUser) {
-        // return next();
-        return app.render(req, res, "/", req.query);
-      }
-
-      // 3) Check if user changed password after the token was issued
-      // if (currentUser.changedPasswordAfter(decoded.iat)) {
-      //   return next();
-      // }
-
-      // THERE IS A LOGGED IN USER
-      res.locals.user = currentUser;
-
-      return next();
-    } catch (err) {
-      // return next();
-      return app.render(req, res, "/", req.query);
-    }
-  }
-  next();
-  console.log(req.cookies);
-  next();
-};
 
 
 
@@ -121,18 +79,18 @@ const protected = async  (req, res, next) => {
 
 app.prepare().then(() => {
   const server = express();
-
+  
   // Body parser, reading data from body into req.body
   server.use(express.json({ limit: "10kb" }));
-
+  
   server.use(cookieParser());
   server.use(morgan('dev'))
 
   // server.get("/profile", protected);
   // server.get("/jobfeeds", protected);
-  server.use("/api/v1/serviceprovider", serviceProvider);
+  server.use("/api/v1/provider", serviceProvider);
   server.use("/api/v1/client", clientRoutes);
-
+  
   server.use(globalErrorHandle)
 
   
@@ -140,17 +98,17 @@ app.prepare().then(() => {
     
   
     server.all("*", (req, res) => {
-      return handle(req, res);
+        return handle(req, res);
     });
     
 
 
   server.listen(port, err => {
     if (err) throw err;
-    console.log(`> Ready on http://localhost:${port}`);
+    console.log(`> Ready on http://localhost:${port} env: ${process.env.NODE_ENV}`);
   });
 
-                  })
+})
 
 process.on('unhandledRejection', err => {
   console.log('UNHANDLED REJECTION! 💥 Shutting down...');

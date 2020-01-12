@@ -46,7 +46,7 @@ const EmpView = (props) => {
   const { _id, title, role, description,
      company, deleteEmployment, user } = props;
      const _delete = () => {
-       deleteEmployment(user._id, _id);
+       deleteEmployment(user._id, user.token, _id);
      }
 
   return (
@@ -77,34 +77,6 @@ const EmpView = (props) => {
 
 
 
-
-
-
-// const EmpModel = (props) =>{
-//   const [show, setShow] = useState(false);
-//   const showModel = () => setShow(true);
-//   const closeModel = () => setShow(false);
-
-//   const { formHandler } = props
-//   return (
-//     <Row>
-//       <Col md={10}>
-//         <h2>Employment History</h2>
-//       </Col>
-//       <Col md={2}>
-//         <AddBtn handler={showModel} />
-//       </Col>
-//     <Modal show={show} onHide={closeModel}>
-//       <Modal.Header closeButton>
-//         <Modal.Title>Add Employment </Modal.Title>
-//       </Modal.Header>
-//       <Modal.Body>
-//         <EmploymentForm _handler={formHandler} closeModel={closeModel} />
-//       </Modal.Body>
-//     </Modal>
-//     </Row>
-//   )
-// }
 
 
 
@@ -145,7 +117,7 @@ class EmploymentHistory extends React.Component {
    formHandler (data) { 
       console.log(data)
       const  { user, addEmployment } = this.props; 
-      addEmployment(user._id, data);
+      addEmployment(user._id, user.token, data);
   }
 
   render () {

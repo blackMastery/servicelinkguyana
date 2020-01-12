@@ -24,15 +24,21 @@ const AppBar = styled.div`
 `
 const Brand = styled.h3`
   color: white;
+
+  
+  @media(min-width: 360px) {
+   font-size: 20px;
+  }
 `
 const SearchInput = styled.input`
     background: #FFFFFF;
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
     border-radius: 3px;
-    width: 254px;
     height: 40px;
     padding: 12px 20px;
     border: 1px solid #ccc;
+
+    
 `
 
 const Avator = styled.div`
@@ -105,9 +111,16 @@ const NavBar =  (props) => {
       </>
     );
 
-    searchBar = (<Form inline >
-      <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-      <Button variant="outline-success">Search</Button>
+    searchBar = (<Form>
+      <Row>
+       <Col sm={10}> 
+          <Form.Control type="text" placeholder="Search" className="mr-sm-2" />
+       </Col>
+
+        <Col sm={2}>
+          <Button variant="outline-success">Search</Button>
+       </Col>
+      </Row>
     </Form>)
   }
 

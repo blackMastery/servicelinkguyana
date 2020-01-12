@@ -47,6 +47,7 @@ const education = new mongoose.Schema({
 
 const skill  = new mongoose.Schema({name:String})
 
+
 const userSchema = new mongoose.Schema({
     firstname: {
         type: String,
@@ -148,8 +149,16 @@ const userSchema = new mongoose.Schema({
     joined: {
         type: Date,
         default: Date.now()
+    },
+    sentProposals: [{type: mongoose.Schema.ObjectId, ref: 'Proposal'},]
+
+},
+    {
+        toJSON: { virtuals: true },
+        toObject: { virtuals: true },
+        strict: 'throw', useNestedStrict: true 
     }
-});
+);
 
 
 

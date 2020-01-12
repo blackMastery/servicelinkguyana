@@ -13,6 +13,25 @@ export const add_education = ({ education: { education}}) =>({
 
 
 
+
+export const chargingRate = (hourRate) =>({
+    type: types.HOUR_RATE,
+    hourRate
+})
+
+
+export const cover_letter = (coverLetter) =>({
+    type: types.COVERLETTER,
+    coverLetter
+})
+
+
+export const est_action = (est) => ({
+    type: types.EST,
+    est
+})
+
+
 export const remove_employment =( id ) => ({
     type: types.DELETE_EMPLOYMENT,
     id: id
@@ -51,21 +70,58 @@ export const islogin = val => ({
     val
 })
 
-export const updateUserInfo = ({data:{data}}) => ({
+export const updateUserInfo = ({user}) => ({
     type: types.UPDATE_USER_INFO,
-    user: {...data}
+    user: {...user}
+})
+
+export const valid_proposal = () =>({
+    type: types.VALID_PROPOSAL
 })
 
 
+export const set_proposal_id = (provider, job) =>({
+    type: types.PROPOSAL_IDS,
+    provider,
+    job
+})
+
+
+export const proposal_request = (data, token) => {
+    return function (dispatch) {
+
+        dispatch({type:"SENDING PROPOSAL"})
+
+        return apiCaller('/api/v1/provider/proposal',{
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+            body: JSON.stringify(data)
+        })
+        .then((json)=>{
+            console.log(json)
+           return dispatch({type:"PROPOSAL SENT"})
+        })
+        .catch((error)=>{
+            console.log(err);
+            return dispatch({type: "PROPOSAL ERROR"})
+        })
+    }
+}
 
 
 
-export const updateUser = (id, data) => {
+
+
+export const updateUser = (id, token, data) => {
     return function (dispatch){
         return apiCaller(`${pathClient}/updateclientinfo/${id}`, {
           method: "PUT",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
           },
           body: JSON.stringify(data)
         }).then(json => {
@@ -101,13 +157,14 @@ export const loaded_jobs = (page, limit) =>{
     }
 }
 
-export const updateEdu = (id, data) => {
+export const updateEdu = (id, token, data) => {
     console.log(id, data)
     return function (dispatch) {
         return apiCaller(`/api/v1/client/education/${id}`,{
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
             },
             body: JSON.stringify(data)
         })
@@ -126,13 +183,14 @@ export const add_employment = ({employment}) => ({
     employmentHistory: employment.employmentHistory
 });
 
-export const addEmp = (id, data) => {
+export const addEmp = (id, token, data) => {
     // console.log(data)
     return function (dispatch) {
         return apiCaller(`/api/v1/client/employment/${id}`, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
             },
             body: JSON.stringify(data)
         })
@@ -154,15 +212,16 @@ export const addEmp = (id, data) => {
 
 
 
-export const deleteEducation = (userid, eduid) => {
+export const deleteEducation = (userid, token, eduid) => {
     const path = `${pathClient}/education/${userid}/${eduid}`;
-
-
     return function(dispatch){
 
         return apiCaller(path,{
             method: 'DELETE',
-            redirect: 'follow'
+            redirect: 'follow',
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
         })
         .then(res=>{
             // console.log(res)
@@ -174,13 +233,16 @@ export const deleteEducation = (userid, eduid) => {
 }
 
 
-export const deleteEmpAction = (userid, epmid) => {
+export const deleteEmpAction = (userid, token, epmid) => {
   const path = `${pathClient}/employment/${userid}/${epmid}`;
 
   return function(dispatch) {
     return apiCaller(path, {
       method: "DELETE",
-      redirect: "follow"
+      redirect: "follow",
+      headers: {
+          Authorization: `Bearer ${token}`
+      }
     }).then(res => {
       console.log(res);
       return dispatch(remove_employment(epmid));
@@ -200,7 +262,7 @@ const delete_skill = id => ({
   id
 });
 
-export const AddSkillAction = (skill, userid) => {
+export const AddSkillAction = (skill, token, userid) => {
     const path = `${pathClient}/skills/${userid}`
 
     return function (dispatch){
@@ -208,7 +270,10 @@ export const AddSkillAction = (skill, userid) => {
         return apiCaller(path, {
           method: "PUT",
             headers: {
-              "Content-Type": "application/json"
+              "Content-Type": "application/json",
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
             },
          body: JSON.stringify(skill)
           
@@ -218,13 +283,16 @@ export const AddSkillAction = (skill, userid) => {
 }
 
 
-export const DeleteSkillAction = (userid, skillid) => {
+export const DeleteSkillAction = (userid, token, skillid) => {
     const path = `${pathClient}/skills/${userid}/${skillid}`;
 
     return function (dispatch) {
         return apiCaller(path, {
           method: "DELETE",
-          redirect: "follow"
+          redirect: "follow",
+          header: {
+              Authorization: `Bearer ${token}`
+          }
         })
         .then(res => {
             return dispatch(delete_skill(skillid))

@@ -2,6 +2,7 @@ const catchAsync = require("../utils/catchAsync");
 
 const AppError = require("../utils/appError");
 
+const mongoose = require('mongoose');
 
 
 
@@ -15,6 +16,7 @@ exports.createOne = Model =>
         data: doc
       }
     });
+    
   });
 
 

@@ -35,33 +35,25 @@ exports.updateJob = factory.updateOne(Job)
 
 exports.deleteJob = factory.deleteOne(Job);
 
-exports.getJob = factory.getOne(Job, {
-  path: "client",
-    select: "jobCount paidAvgHourlyRate goingJobs completedJobs"
-});
 
-
-
-
-// exports.getJob = catchAsync(async (req, res, next) => {
-//     console.log(req.params.id, "getojob")
-//     let query = Job.findById(req.params.id);
+exports.getJob = catchAsync( async (req, res, next) => {
+    const { id } = req.params;
+    const query = Job.findById(id)
+    const job = await query.populate({
+        path: "user",
+    select: "firstname jobCount paidAvgHourlyRate goingJobs completedJobs Proposal"
+    })
+    .populate('proposals')
 
  
-//     // query = query
-//     const doc = await query.populate("client");
+       res.status(200).json({
+         status: "success",
+         job: job
+       });
 
-//     if (!doc) {
-//         return next(new AppError("No document found with that ID", 404));
-//     }
+})
 
-//     res.status(200).json({
-//         status: "success",
-//         data: {
-//             data: doc
-//         }
-//     })
-// })
+
 
 exports.getAllJob = catchAsync(async (req, res, next) => {
             const queryObject = {
@@ -128,7 +120,7 @@ exports.getAllJob = catchAsync(async (req, res, next) => {
             } else {
                 query = query.sort("createdAt");
             }
-            const jobs = await query
+            const jobs = await query.populate('proposals')
 
                 res.status(200).json({
                     remaining,

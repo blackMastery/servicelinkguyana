@@ -26,13 +26,25 @@ import WorkHistory from '../components/history/workhistory'
 import EducationHistory from '../components/history/educationhistory'
 import EditDescription from '../components/editdescription'
 import EmploymentHistory from '../components/history/employmenthistory'
-import SkillColumn from '../components/skillsColumn'
-import AuthContainer from '../components/Auth/authContainer'
+import SkillColumn from '../components/SkillColumn/skillContainer'
+import AuthContainer from '../components/Auth/authContainer';
+import ModalContainer from "../components/Modals/modalContainer";
 
 
 
 
 
+const Rates = styled.div`
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 20px;
+    text-transform: capitalize;
+    color: #000000;
+    text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+    margin: 0px;
+
+`
 
 
  function Profile (props) {
@@ -104,7 +116,9 @@ import AuthContainer from '../components/Auth/authContainer'
 
                       <p className="md-text">last job price</p>
 
-                      <p className="bold-text">$25.00</p>
+                      <Rates>
+                        <EditBtnPencil style={{justifyContent:'space-around'}}/>
+                        $25.00</Rates>
 
                       <p className="md-text">Hourly rate</p>
                     </div>

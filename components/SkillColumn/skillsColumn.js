@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
-import { Row, Col, Container, Modal, Button, Form } from 'react-bootstrap';
-import { Paper, AddBtn, SaveBtn, SecondaryBtn, SkillBadge } from './utils'
+// import styled from 'styled-components'
+import { Row, Col, Container } from 'react-bootstrap';
+import { AddBtn, SaveBtn, SecondaryBtn, SkillBadge } from '../utils'
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import ModalContainer from "./Modals/modalContainer";
-import { DeleteSkillAction, AddSkillAction } from "../actions/action";
+import ModalContainer from "../Modals/modalContainer";
+import { DeleteSkillAction, AddSkillAction } from "../../actions/action";
 
-import SkillForm from '../components/Forms/skills'
+import SkillForm from '../Forms/skills'
 
 
 const SkillModal = ModalContainer(SkillForm);
@@ -16,20 +16,21 @@ const SkillModal = ModalContainer(SkillForm);
 
 
 
-const SkillColumn = ( props ) => {
+export const SkillColumn = ( props ) => {
+    const { skills, removeSkill, user, AddSkill } = props;
     const [show, setShow] = useState(false);
     const showModal = () => setShow(true);
     const closeModal = () => setShow(false);
-  const { skills, removeSkill, user, AddSkill } = props;
-    if(!skills) return null;
+
+    
     const formHandler = (data) => {
         console.log(data)
     }
     const _delete = (skillid) =>{
-      removeSkill(user._id, skillid)
+      removeSkill(user._id, user.token, skillid)
     }
     const _add = (skill) => {
-      AddSkill(skill, user._id);
+      AddSkill(skill, user.token, user._id);
     }
     
 
@@ -46,8 +47,8 @@ const SkillColumn = ( props ) => {
 
           <hr />
         <Row>
-          {skills.map(skill => (
-            <Col md="auto">
+          {skills.map((skill,idx) => (
+            <Col md="auto" key={idx}>
               <SkillBadge>{skill.name}</SkillBadge>
             </Col>
           ))}
@@ -67,15 +68,3 @@ const SkillColumn = ( props ) => {
     );
 }
 
-const mapStateToProps = state => ({
-  skills: state.user.skills,
-  user: state.user
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  removeSkill: bindActionCreators( DeleteSkillAction, dispatch),
-  AddSkill: bindActionCreators(AddSkillAction, dispatch)
-
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(SkillColumn);

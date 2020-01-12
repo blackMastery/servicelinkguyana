@@ -50,7 +50,7 @@ const LoginForm = (props) => {
                   name="email"
                   placeholder="Enter email"
                   {...formik.getFieldProps("email")}
-                  isValid={!formik.errors.email}
+                  isValid={formik.errors.email}
                 />
               </Form.Group>
               <span>{formik.errors.password}</span>
@@ -103,9 +103,9 @@ const LoginForm = (props) => {
 
 
  const Login  = (props) => {
-   console.log(props);
+   let router;
    if (!isServer) {
-     const router = useRouter()
+      router = useRouter()
      if (props.isLogin) {
        router.push("/jobfeeds");
 

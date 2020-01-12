@@ -72,10 +72,6 @@ const jobSchema = new mongoose.Schema({
           type: Number,
           default:0 
        },
-      proposals: {
-          type: Number,
-          default:0
-        },
       close: {
           type: Boolean,
           default: false
@@ -83,7 +79,22 @@ const jobSchema = new mongoose.Schema({
 
 
 
-})
+},
+    {
+        toJSON: { virtuals: true },
+        toObject: { virtuals: true }
+    }
+    )
+
+jobSchema.virtual('proposals', {
+    ref: 'Proposal',
+    foreignField: 'job',
+    localField: '_id',
+  count: true // And only get the number of docs
+
+});
+
+
 
 
 const Job = mongoose.model('Job', jobSchema);

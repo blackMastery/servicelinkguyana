@@ -11,7 +11,7 @@ import { Paper, AddBtn, SaveBtn, SecondaryBtn } from '../utils'
 
 
 
-export default ({ _handler }) => {
+export default ({ _handler, closeModal }) => {
   const [company, setCompany] = useState("");
   const [title, setTitle] = useState("");
   const [to, setTo] = useState("");
@@ -35,6 +35,7 @@ export default ({ _handler }) => {
   const handleSubmit = e => {
     e.preventDefault();
     _save();
+    closeModal()
   };
 
   const _save = () => {

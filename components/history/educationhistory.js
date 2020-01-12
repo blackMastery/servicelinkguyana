@@ -91,11 +91,11 @@ const EducationHistory = ({
 
   const formHandler = data => {
     console.log(data);
-    addEducation(user._id, data);
+    addEducation(user._id, user.token, data);
   };
   const deleteHandler =(userid, id )=> {
     console.log(userid, id)
-    deleteEdu(userid,id)
+    deleteEdu(userid, user.token, id)
   };
 
   console.log(show)

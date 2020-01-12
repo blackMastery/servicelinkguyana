@@ -27,6 +27,7 @@ const handleJWTExpiredError = () =>
 
 const sendErrorDev = (err, req, res) => {
   // A) API
+  console.log("sendErrorDev", err);
   if (req.originalUrl.startsWith("/api")) {
     return res.status(err.statusCode).json({
       status: err.status,
@@ -46,6 +47,8 @@ const sendErrorDev = (err, req, res) => {
 
 const sendErrorProd = (err, req, res) => {
   // A) API
+  console.log("sendErrorProd", err);
+  
   if (req.originalUrl.startsWith("/api")) {
     // A) Operational, trusted error: send message to client
     if (err.isOperational) {
@@ -83,8 +86,9 @@ const sendErrorProd = (err, req, res) => {
 };
 
 module.exports = (err, req, res, next) => {
-  // console.log(err.stack);
-
+  
+  console.log("from the global handler",err);
+  
   err.statusCode = err.statusCode || 500;
   err.status = err.status || "error";
 

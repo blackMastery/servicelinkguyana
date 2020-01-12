@@ -1,50 +1,11 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
-import { Row, Col, Container, Modal, Button, Form } from 'react-bootstrap';
-import { Paper, AddBtn, SaveBtn, SecondaryBtn, Description, EditBtnPencil } from './utils'
-
-// import { updateUser } from '../api';
-import { updateUser } from "../actions/action";
-
-import { connect } from "react-redux";
+import { Description, EditBtnPencil } from './utils'
 import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
 
+import { updateUser } from "../actions/action";
 import ModalContainer from "./Modals/modalContainer";
-
-
-const DescriptionForm = (props) => {
-    const [description, setDescription] = useState(props.description);
-    const handler = e => {
-        const { value } = e.target;
-        setDescription(value)
-    }
-    const submitDesc = (e) => {
-        e.preventDefault();
-        console.log(description)
-        props.updateHandler({description})
-    }
-    return (
-      <Form onSubmit={submitDesc}>
-        <Form.Group controlId="exampleForm.ControlTextarea1">
-          <Form.Label>Description (optional) </Form.Label>
-          <Form.Control
-            as="textarea"
-            rows="3"
-            value={description}
-            required
-            onChange={handler}
-          />
-        </Form.Group>
-        <Row>
-          <Col md="auto" className="ml-auto">
-            <SaveBtn variant="primary" type="submit">
-              Save
-            </SaveBtn>
-          </Col>
-        </Row>
-      </Form>
-    );
-}
+import {DescriptionForm} from './Forms/descriptionForm' 
 
 
 
@@ -75,11 +36,12 @@ class EditDescription extends React.Component {
   }
   handler(data) {
       console.log(data)
-    this.props._updateUser(this.props.user._id, data);
+    this.props._updateUser(this.props.user._id,
+       this.props.user.token, data);
   }
 
   render() {
-    const { children, _updateUser, user } = this.props;
+    const { children, user } = this.props;
 
     return (
       <>
@@ -98,6 +60,8 @@ class EditDescription extends React.Component {
       </>
     );
   }
+
+  
 } 
 
 

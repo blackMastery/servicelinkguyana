@@ -169,6 +169,7 @@ export const EditBtnPencil = ({handler}) => {
        display: flex;
        justify-content: flex-end;
         opacity:0;
+        padding-right: 15px;
      }
       .edit-overlay{
       height: 100%;

@@ -20,14 +20,14 @@ const {
   addSkill,
   deleleteSkill
 } = require("../../controllers/user");
-const { signup, login } = require('../../controllers/auth')
+const { signup, login, protect } = require("../../controllers/auth");
 
 
 
 
 router.post("/signup", signup);
 
-router.put("/updateclientinfo/:id", updateDesc);
+router.put("/updateclientinfo/:id", protect, updateDesc);
 
 router.post("/login", login);
 
@@ -38,27 +38,23 @@ router.get("/jobslist", getAllJob);
 
 
 
-router.route("/skills/:id")
-.put(addSkill)
+router.route("/skills/:id", protect).put(addSkill);
 
 
-router.route("/skills/:id/:skillid").delete(deleleteSkill);
+router.route("/skills/:id/:skillid", protect).delete(deleleteSkill);
 
 
-router.route("/employment/:id")
-  .put(addEmployment)
+router.route("/employment/:id", protect).put(addEmployment);
 
-router.route("/employment/:id/:empid")
-  .delete(deleteEmployment);
+router.route("/employment/:id/:empid", protect).delete(deleteEmployment);
 
 
-router.route("/education/:id/:educationid")
-  .delete(deleteEducation);
+router.route("/education/:id/:educationid", protect).delete(deleteEducation);
 
 router
-  .route("/education/:id")
   // .get(getEducation)
-  .put(addEducation)
+  .route("/education/:id", protect)
+  .put(addEducation);
 
 
 

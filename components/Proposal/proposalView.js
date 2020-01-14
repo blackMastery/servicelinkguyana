@@ -11,8 +11,8 @@ import {
     JobButton
 } from '../utils'
 
-import { SelectComp, CoverLetter, Rate } from '../Forms/formUtils'
-
+import { SelectComp, Rate } from '../Forms/formUtils'
+import CoverLetter from '../Forms/CoverLetter'
 
 
 const ProposalView = ( props ) => {
@@ -38,26 +38,10 @@ const ProposalView = ( props ) => {
                 </Panel>
             </Col>
         </Row>
-
-
-
-
-        <hr />
-
-        
+        <hr /> 
         <Panel title="Additional details">
             <Container>
-                <Row>
-                    <Col>
-                        <CoverLetter />
-                    </Col>
-                </Row>
-                <hr />
-                <Row>
-                    <Col>
-                        <JobButton onClick={props._submit}> Submit Proposal </JobButton>
-                    </Col>
-                </Row>
+                  <CoverLetter {...props}/>
                 <hr />
             </Container>
         </Panel>

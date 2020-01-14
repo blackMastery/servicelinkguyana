@@ -47,28 +47,34 @@ const dispatchSaveEst = (dispatch) => ({
     saveEst: bindActionCreators(est_action, dispatch)
 })
 
+const estState = ( state ) => ({
+    est: state.proposal.submittedProposal.est 
+})
 
-
-export const SelectComp = connect(null,dispatchSaveEst)((props) => {
-    const [est, setEst] = useState('')
-    const handleChange = (event) => setEst(event.target.value)
-    const _blur = () => props.saveEst(est)
+export const SelectComp = connect(estState,dispatchSaveEst)((props) => {
+    // const [est, setEst] = useState('')
     const options = ['one week', 'more than one week', 'three weeks',  'other']
+    const [defaultOpt]  = options
+    // props.saveEst(defaultOpt)
+    const handleChange = ({target}) =>{ 
+        const { value } = target;
+        props.saveEst(value)
+}    
 
+    const {est} = props
+    console.log(est)
     return (
-      
-                <Form>
+                    <>
                     <FormLabel>How long will this project take?</FormLabel>
                        <FormControl as="select" name='est'
                        value={est}
                        onChange={handleChange}
-                       onBlur={_blur}
                        >
                            { 
                             options.map((opt,idx) => <option key={idx} value={opt} >{opt}</option>)
-                           }
+                        }
                        </FormControl>
-                </Form>
+                    </>
     
     )
 })
@@ -79,17 +85,19 @@ export const SelectComp = connect(null,dispatchSaveEst)((props) => {
 const dispatchSaveLetter = (dispatch) => ({
     saveCoverLetter: bindActionCreators(cover_letter, dispatch)
 })
+const coverLetterState = ( state ) => ({
+    coverLetter: state.proposal.submittedProposal.coverLetter 
+})
 
 // 
-export const CoverLetter = connect(null, dispatchSaveLetter)((props) =>{
-    const [letter, setLetter] = useState('')
+export const CoverLetter = connect(coverLetterState, dispatchSaveLetter)((props) =>{
     const handleChange = (event) =>{ 
-        setLetter(event.target.value)
+        props.saveCoverLetter(event.target.value)
     }
-    const _blur = () => props.saveCoverLetter(letter)
+    // const _blur = () => 
+    const { coverLetter } = props
 
     return (
-        <Form className="form" style={{ marginTop: "20px" }}>
             <Form.Group >
                 <Form.Label style={{ marginBottom: "1.2rem" }}>
                     {" "}
@@ -99,12 +107,10 @@ export const CoverLetter = connect(null, dispatchSaveLetter)((props) =>{
                     as="textarea"
                     rows="3"
                     name="description"
-                    value={letter}
+                        value={coverLetter}
                     onChange={handleChange}
-                    onBlur={_blur}
                 />
             </Form.Group>
-        </Form>
     )
 })
 
@@ -116,28 +122,42 @@ const dispatchSaveRate = (dispatch) => ({
 })
 
 
-export const Rate = connect(null, dispatchSaveRate)((props) => {
+
+
+const RateForm = (props) => {
 
     const [rate, setRate] = useState('')
+
     const handleChange = (event) => {
         setRate(event.target.value)
     }
-    const _blur = () => props.saveRate(rate)
-
+    const _submit = (e) => {
+        e.preventDefault()
+        props._save(rate)
+}
     return (
-        <Form>
+        <Form onSubmit={_submit}>
 
             <Form.Group controlId="formBasicEmail">
                 <Form.Control
                 as='input'
                 type='number'
                 required
-                value={rate}
                 onChange={handleChange}
-                onBlur={_blur}
                 />
             </Form.Group>
         </Form>
     )
-})
+}
 
+
+const RateContainer = (props) =>  {
+        const _save = (data) => {
+            props.saveRate(data)
+        }
+            return (
+               <RateForm _save={_save}/>
+            )
+        }
+
+export const Rate = connect(null, dispatchSaveRate)(RateContainer)

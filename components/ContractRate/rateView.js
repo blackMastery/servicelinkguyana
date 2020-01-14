@@ -58,6 +58,7 @@ const RateField = (props) => {
 
 const RateView = ( props ) => {
   const [hourRate, setRate] = useState('');
+  const { _rate } = props;
 
 
     return (
@@ -94,6 +95,7 @@ const RateView = ( props ) => {
         <Row>
           <Col md={6}>
             <p>Total amount the client will see on your proposal</p>
+            <p>${_rate}  </p>
           </Col>
           <Col md={6}>
             <Rate />
@@ -119,6 +121,7 @@ const RateView = ( props ) => {
 
 
 const mapStateToProps = (state) => ({
+  _rate: state.proposal.submittedProposal.hourRate
 
 
 })
@@ -129,4 +132,4 @@ const mapDispatchToProps = (dispatch) =>({
 })
 
 
-export default connect(null, mapDispatchToProps)(RateView)
+export default connect(mapStateToProps, mapDispatchToProps)(RateView)

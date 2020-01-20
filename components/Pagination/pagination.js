@@ -89,12 +89,12 @@ render () {
                 {number}
             </Page>
 
-            </Pagination.Item>,
+            </Pagination.Item>
         );
     }
     return (
-        <div>_
-            <Pagination>
+        <div>
+            <Pagination style={{ "overflow-x": 'auto'}}>
           <Pagination.Prev onClick={this._prev} />
               {items}
           <Pagination.Next onClick={this._next}/>

@@ -115,16 +115,10 @@ const OverLay = styled.div`
                               `}
                           </style>
                           <Row>
-                            <Col md={9}>
+                            <Col>
                               <Link href='/job/[id]' as={`/job/${_id}`}>
                               <h4 className="card-title">{title}</h4>
                               </Link>
-                            </Col>
-                            <Col md={3}>
-                              {/* <span className="end time">{est}</span> */}
-                              <div className="end">
-                                  <HeartBtn />
-                              </div>
                             </Col>
                           </Row>
                           <Row>
@@ -136,7 +130,11 @@ const OverLay = styled.div`
                           <Row>
                             <Col>
                                 <span>{desc} </span> 
-                                <span><strong>Read more</strong></span>
+                                <span>
+                                  <Link href='/job/[id]' as={`/job/${_id}`}>
+                                  <strong>Read more</strong>
+                                  </Link>
+                                </span>
                             </Col>
                           </Row>
 
@@ -150,6 +148,10 @@ const OverLay = styled.div`
                           </Row>
                           <hr />
                           <Row>
+                          <Col xs="auto">
+                          <HeartBtn />
+                          </Col>
+
                             <Col xs="auto">
                               <span>Proposals: {proposals}</span>
                             </Col>

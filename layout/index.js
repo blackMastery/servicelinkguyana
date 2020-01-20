@@ -14,13 +14,11 @@ margin-top: 30px;
 
 
 export default ({children}) =>(
-	<div>
 		
-	<Container className="bgcolor" fluid={true} style={{ backgroundColor: '#F2F2F2'}} >
+	<Container className="bgcolor" fluid={true} style={{ backgroundColor: '#F2F2F2',padding:0}} >
 	<NavBar/>
 	{children}
 
 	<Footer/>
 	</Container>
-	</div>
 	)

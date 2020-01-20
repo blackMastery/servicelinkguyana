@@ -320,7 +320,7 @@ export const HeartBtn = (props) => {
   const handle = () => setLike(!like)
   const color =  like ? "#09B4A1": "none";
   return (
-    <svg onClick={handle} width="41" height="36" viewBox="0 0 41 36"
+    <svg onClick={handle} width="31" height="26" viewBox="0 0 41 36"
      fill={color} xmlns="http://www.w3.org/2000/svg">
      <path
       d="M20.3049 34.9903C19.2388 34.5098 15.907 31.0593 15.907 31.0593L4.09053 18.8294C4.09053 18.8294 -3.15047 9.83178 4.53475 3.36744C12.22 -3.0969 20.4382 5.72605 20.4382 5.72605C20.4382 5.72605 28.1678 -3.00955 36.0751 3.54215C43.9824 10.0938 37.4966 17.9559 37.4966 17.9559C37.4966 17.9559 21.3711 35.4708 20.3049 34.9903Z"

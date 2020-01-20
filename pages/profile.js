@@ -198,4 +198,4 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   updateUser: bindActionCreators(updateUserInfo, dispatch),
 })
-export default connect(mapStateToProps, mapDispatchToProps)( AuthContainer(Profile))
+export default connect(mapStateToProps, mapDispatchToProps)(Profile)

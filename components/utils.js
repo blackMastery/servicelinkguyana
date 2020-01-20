@@ -1,5 +1,6 @@
  
 import styled, { css } from "styled-components";
+import React, {useState} from 'react'
  
  
  export const Description = styled.div`
@@ -210,7 +211,7 @@ export const Panel = ({ children, title}) => {
 
 
   const PanelBody = styled(Paper)`
-    padding: 0px;
+    padding: 0px 0px 10px 0px;
     width: 100%;
 `
 
@@ -221,6 +222,7 @@ export const Panel = ({ children, title}) => {
     line-height: 42px;
     text-transform: capitalize;
     color: #FFFFFF;
+
 `;
 
 
@@ -301,3 +303,29 @@ export const DeleteIconBtn = ({ _delete}) =>(
 )
 
 
+export const NotifyBtn = ({fill}) =>(
+
+<svg width="22" height="27" viewBox="0 0 32 37" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path
+ d="M13.7168 2.28619C13.7168 2.28619 14.2187 -0.160387 16.0587 0.00834273C17.8988 0.177072 18.4006 2.28619 18.4006 2.28619V3.88912C18.4006 3.88912 27.2664 5.28114 27.5173 15.0253C27.7683 24.7694 32.5357 25.7396 31.9502 28.0174C31.3647 30.2953 29.8592 29.7891 29.8592 29.7891L2.25826 30C2.25826 30 0 29.8735 0 27.8065C0 25.7396 4.93472 23.7148 4.6838 15.0253C4.76744 5.32332 13.7168 3.88912 13.7168 3.88912V2.28619Z"
+  fill={fill}/>
+<path d="M11 32H21C21 32 20.3488 37.0464 15.8837 36.9997C11.4186 36.953 11 32 11 32Z" fill={fill}/>
+</svg>
+
+)
+
+
+export const HeartBtn = (props) => {
+  const [like, setLike] = useState(false)
+  const handle = () => setLike(!like)
+  const color =  like ? "#09B4A1": "none";
+  return (
+    <svg onClick={handle} width="41" height="36" viewBox="0 0 41 36"
+     fill={color} xmlns="http://www.w3.org/2000/svg">
+     <path
+      d="M20.3049 34.9903C19.2388 34.5098 15.907 31.0593 15.907 31.0593L4.09053 18.8294C4.09053 18.8294 -3.15047 9.83178 4.53475 3.36744C12.22 -3.0969 20.4382 5.72605 20.4382 5.72605C20.4382 5.72605 28.1678 -3.00955 36.0751 3.54215C43.9824 10.0938 37.4966 17.9559 37.4966 17.9559C37.4966 17.9559 21.3711 35.4708 20.3049 34.9903Z"
+       stroke="#09B4A1" stroke-width="2"/>
+  </svg>
+
+  )
+}

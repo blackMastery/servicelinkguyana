@@ -54,15 +54,24 @@ export const logout = () =>({
 })
 
 
-export const login_user = (userData) => ({
+export const login_user = ({user}) => ({
     type: types.LOGIN,
-    userData,
+    user,
 })
 
 
 const add_jobs = ({ jobs, remaining, resultsLength, page, numofJobs} ) => ({
     jobs, remaining, resultsLength, page, numofJobs,
     type: types.LOAD_JOBS
+})
+
+
+
+
+const job_search = ({ jobs, remaining, resultsLength, page}) => ({
+    type: types.JOB_SEARCH,
+    jobs, remaining, resultsLength, page
+
 })
 
 export const islogin = val => ({
@@ -85,6 +94,14 @@ export const set_proposal_id = (provider, job) =>({
     provider,
     job
 })
+
+export const search_view = (view) => ({
+    type: types.SEARCH_VIEW,
+    searchView: view
+})
+
+
+
 
 
 export const proposal_request = (data, token) => {
@@ -354,4 +371,38 @@ export const userLogin = (data) => {
           });
     }
 
+}
+
+
+export const turn_off_search = () =>({
+    type: types.TURN_OFF_SEARCH_VIEW
+})
+
+export const searchReq = (q, page, limit) => {
+    const path = `${pathClient}/job/search?q=${q}&limit=${limit}&page=${page}`;
+    
+    return function (dispatch) {
+        dispatch({type: types.SEARCHING})
+        dispatch({type: types.SAVE_SEARCH, q: q})
+
+        return apiCaller(path,{
+            method: 'GET',
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        .then(
+            json =>{
+                dispatch({ type: types.SEARCH_COMPLETE });
+                console.log(json)
+                return dispatch( job_search(json) )
+        })
+        .catch((error) => {
+            dispatch({type: types.SEARCH_COMPLETE })
+            console.log(error)
+            return dispatch({type: types.SEARCH_ERROR,
+            error: error})
+        })
+                    
+    }
 }

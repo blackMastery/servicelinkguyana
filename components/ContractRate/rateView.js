@@ -21,10 +21,7 @@ const RateField = (props) => {
         console.log(values);
         saveRate(values.rate)
       }}
-      onBlur={(values) => {
-        console.log(values);
-        // handleSubmit(values);
-      }}
+  
       validationSchema={Yup.object({
         rate: Yup.number().required('Required'),
 
@@ -38,11 +35,16 @@ const RateField = (props) => {
           <span>{formik.errors.rate}</span>
 
           <Form.Group controlId="formBasicEmail">
+          {formik.touched.rate && formik.errors.rate ? (
+          <span> error  {formik.errors.rate} </span>
+          ): null}
             <Form.Control 
-              isInvalid={formik.errors.rate}
+              isInvalid={formik.touched.rate && formik.errors.rate}
               isValid={!formik.errors.rate}
               placeholder="$" name="rate"
-              {...formik.getFieldProps("rate")}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              value={formik.values.rate}
 
             />
           </Form.Group>

@@ -74,12 +74,14 @@ class JobPagination extends React.Component {
 
 render () {
     console.log(this.props.data)
-    const {numofJobs} = this.props.data;
+    const {numofJobs, limit} = this.props.data;
     let items = [];
-    let limit = 5;
+    // let limit = 5;
 
     let numOfPage = numofJobs / limit ; 
+
     console.log({numOfPage})
+    
     for (let number = 1; number <= numOfPage; number++) {
         items.push(
           <Pagination.Item onClick={() => this._page(number)} key={number} active={number === this.active}  >

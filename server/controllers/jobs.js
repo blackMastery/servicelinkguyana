@@ -7,10 +7,7 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
 const User = require('../models/user')
-
-
-
-
+const APIFeatures = require('../utils/apiFeatures')
 
 
 
@@ -53,7 +50,53 @@ exports.getJob = catchAsync( async (req, res, next) => {
 
 })
 
+exports.jobSearch = catchAsync(async(req,res,next)=>{
+    const {q} = req.query;
+    console.log(q)
+    
+    const query =  Job.find({
+        
+            $text:{
+                $search: q,
+                $caseSensitive: false
+            }
+        
+    })
+    // const page = req.query.page * 1 || 1;
+    // const limit = req.query.limit * 1 || 100;
+    // const skip = ( page - 1 ) * limit;
 
+    
+    
+    
+    const searchResults = await query;
+    const features =  new APIFeatures(query, req.query)
+    .paginate()
+    
+    
+    const jobs = await features.query
+    const remaining = searchResults.length - (features.skip + features.limit);
+
+
+    res.status(200)
+    .json({
+        remaining,
+        page: features.page,
+        resultsLength: searchResults.length,
+        jobs
+    })
+
+
+
+
+
+
+
+
+
+
+
+})
 
 exports.getAllJob = catchAsync(async (req, res, next) => {
             const queryObject = {
@@ -131,5 +174,6 @@ exports.getAllJob = catchAsync(async (req, res, next) => {
                 })
 
          });
+
 
 

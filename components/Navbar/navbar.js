@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import { Row, Col, Container, Form, FormControl,  } from 'react-bootstrap';
 
 import Link from "next/link";
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 
 import { useRouter } from 'next/router'
@@ -12,8 +14,10 @@ import ListGroup from "react-bootstrap/ListGroup";
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { NotifyBtn } from '../utils'
 
-
+import { withSearch } from '../Search/jobsearch'
 
 
 const AppBar = styled.div`
@@ -54,7 +58,44 @@ const Avator = styled.div`
 
 
 
+const QuickSearch = withSearch((props) => {
+  const router = useRouter()
 
+
+
+   const formik = useFormik({
+    initialValues: {
+        search: '',
+    },
+    validationSchema: Yup.object({
+        search: Yup.string()
+      }),
+    onSubmit: values => {
+    //   console.log(values)
+      props.search_req(values.search)
+      router.push('/jobfeeds')
+    },
+  });
+
+  return (
+    <Form onSubmit={formik.handleSubmit}>
+      <Row>
+       <Col sm={10}> 
+          <Form.Control 
+          type="text" 
+          placeholder="Search" 
+          className="mr-sm-2" 
+          {...formik.getFieldProps('search')}
+          />
+       </Col>
+
+        <Col sm={2}>
+          <Button  type="submit" variant="outline-success">Search</Button>
+       </Col>
+      </Row>
+    </Form>
+  )
+})
 
 
 const NavBar =  (props) => {
@@ -86,8 +127,47 @@ const NavBar =  (props) => {
 
   }else{
     avator = (
-      <>
-        <Avator id="Popover1" className="ml-auto" />
+      < >
+        <div className="ml-auto d-flex flex-row">
+         <Nav.Link  id="findwork" href="/jobfeeds" className="text-white">Find Work</Nav.Link>
+         
+         <Nav.Link id="myjobs"  href="#" className="text-white" >My Jobs</Nav.Link>
+         
+         <div className="p-2 mr-3">
+            <NotifyBtn fill="white"/>
+         </div>
+         <Avator id="Popover1"  className="p-2"/>
+        </div>
+
+
+
+        <UncontrolledPopover
+          trigger="legacy"
+          placement="bottom"
+          // isOpen={popoverOpen}
+          target="myjobs"
+          // toggle={toggle}
+        >
+
+     
+       
+          <Link href="#">
+            <ListGroup.Item> My Jobs </ListGroup.Item>
+          </Link>
+          <Link href="#">
+            <ListGroup.Item> Saved Jobs </ListGroup.Item>
+          </Link> 
+          <Link href="#">
+            <ListGroup.Item> My Contacts </ListGroup.Item>
+          </Link>
+
+          <Link href="#">
+            <ListGroup.Item> Proposals </ListGroup.Item>
+          </Link>
+        </UncontrolledPopover>
+
+
+
         <UncontrolledPopover
           trigger="legacy"
           placement="bottom"
@@ -96,32 +176,20 @@ const NavBar =  (props) => {
           // toggle={toggle}
         >
 
-        {/* <Popover
-        > */}
+     
           <PopoverHeader>
             {user.firstname} {user.lastname}
           </PopoverHeader>
           <PopoverBody></PopoverBody>
-          <Link href="/profile">
-            <ListGroup.Item>Profile Veiw </ListGroup.Item>
-          </Link>
+          <Nav.Link href="/profile">
+                    Profile Veiw 
+          </Nav.Link>
           <ListGroup.Item onClick={_logout}>Log-out </ListGroup.Item>
-        {/* </Popover> */}
         </UncontrolledPopover>
       </>
     );
 
-    searchBar = (<Form>
-      <Row>
-       <Col sm={10}> 
-          <Form.Control type="text" placeholder="Search" className="mr-sm-2" />
-       </Col>
-
-        <Col sm={2}>
-          <Button variant="outline-success">Search</Button>
-       </Col>
-      </Row>
-    </Form>)
+    searchBar = (<QuickSearch/>)
   }
 
 
@@ -142,7 +210,6 @@ const NavBar =  (props) => {
          {searchBar}
           
           
-           
            
 
 

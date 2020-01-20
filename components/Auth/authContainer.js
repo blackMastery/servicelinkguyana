@@ -3,8 +3,8 @@ const isServer = typeof window === 'undefined'
 
 
 const AuthContainer = (Comp) => {
-
     return function (props) {
+        console.log(props , 'auth container ')
     if(!isServer){
         const router = useRouter()
         if (!props.isLogin) {

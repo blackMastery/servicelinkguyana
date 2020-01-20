@@ -55,15 +55,15 @@ render() {
 
             <Row>
               <Col>
+                 <Info>Availability</Info>
                   <Topic>{job.hourlyRate}</Topic>
-                 <Info>Hourly</Info>
               </Col>
               <Col>
-                  <Topic> {job.duration} </Topic>
                 <Info>Project Length</Info>
+                  <Topic>{job.duration}</Topic>
               </Col>
               <Col>
-                  <Topic>{job.experienceLevel}</Topic>
+                  <Topic>{job.experienceLevel} Level</Topic>
               </Col>
                 <Col>
                   <Topic>{job.paymentStyle}</Topic>
@@ -88,17 +88,21 @@ render() {
             <hr/>
             <Row>
               <Col>
-                  <Topic>Activity on this job</Topic>
+                  <Topic className="pb-3"> 
+                    <strong> 
+                      Activity on this job
+                    </strong> 
+                    </Topic>
                   <Info> <strong>Proposals: </strong> {job.proposals}</Info>
                   <Info><strong> Interviewing: </strong> {job.interviewing} </Info>
                   <Info><strong> Invites sent: </strong> {job.invitesSent} </Info>
                   <Info><strong> Unanswered invites: </strong> {job.interviewing} </Info>
-
-
-
-
-
               </Col>
+
+
+
+
+
             </Row>
           </Col>
           <Col md={4}>

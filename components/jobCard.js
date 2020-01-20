@@ -4,6 +4,8 @@ import { Row, Col, Container } from 'react-bootstrap';
 import Link from "next/link";
 import _ from 'lodash'
 
+import { HeartBtn } from './utils'
+
 /**
  * props:
  * title, description location, proposals, est, spent
@@ -89,8 +91,7 @@ const OverLay = styled.div`
                     })
 
                     return (
-                      <Link href='/job/[id]' as={`/job/${_id}`}>
-                        <Card>
+                      <Card>
                         <Container fluid={true}>
                           <style jsx>
                             {`
@@ -111,14 +112,19 @@ const OverLay = styled.div`
                               .card-title:hover {
                                 text-decoration: underline;
                               }
-                            `}
+                              `}
                           </style>
                           <Row>
                             <Col md={9}>
+                              <Link href='/job/[id]' as={`/job/${_id}`}>
                               <h4 className="card-title">{title}</h4>
+                              </Link>
                             </Col>
                             <Col md={3}>
-                              <span className="end time">{est}</span>
+                              {/* <span className="end time">{est}</span> */}
+                              <div className="end">
+                                  <HeartBtn />
+                              </div>
                             </Col>
                           </Row>
                           <Row>
@@ -129,7 +135,8 @@ const OverLay = styled.div`
                           <hr/>
                           <Row>
                             <Col>
-                                <p>{desc} </p> <span><strong>Read more</strong></span>
+                                <span>{desc} </span> 
+                                <span><strong>Read more</strong></span>
                             </Col>
                           </Row>
 
@@ -157,7 +164,6 @@ const OverLay = styled.div`
                           </Row>
                         </Container>
                       </Card>
-                      </Link>                      
 
                     );
                   }

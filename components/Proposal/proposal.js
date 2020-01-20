@@ -27,56 +27,27 @@ class Proposal extends React.Component {
         super(props)
         this._submit = this._submit.bind(this)
     }
-     
-     check (propposal) {
-        let schema = Yup.object().shape({
-
-
-            hourRate: Yup
-                .number()
-                .required()
-                .positive()
-                .integer(),
-            provider: Yup.string().required(),
-            job: Yup.string().required(),
-            est: Yup.string().required(),
-            coverLetter: Yup.string().required()
-
-        });
-
-         schema.validate(propposal)
-            .then((valid) => {
-                console.log(valid)
-                // return R.merge(state, valid)
-            })
-            .catch((err) => {
-                const { message, path, name } = err;
-                console.log({ message, path, name })
-
-                // return R.merge(state, { error: { message } })
-            })
-
-
-
-    }
-    _submit(){
+    
+    _submit(data){
         const { user, jobId } = this.props
         this.props.saveIds(user._id, jobId)
-        // this.props.propospalIsvalid();
-        // this.check(this.props._proposal)
-        /**
-         * TODO: Validate proposal data 
-         * 
-         * 
-         */
-        this.props.saveProposal(this.props._proposal, this.props.user.token)
+        const proposal =  Object.assign({},
+            data,
+             {
+             provider: user._id,
+             job: jobId 
+             }
+            );
+        console.log(proposal)
+        this.props.saveProposal(proposal, this.props.user.token)
+    }
+        
 
         
-    }
 
     render(){
         console.log(this.props)
-        return(<ProposalView {...this.props} sendProposal={this._submit} />)
+        return(<ProposalView _submit={this._submit} />)
         }
 }
 

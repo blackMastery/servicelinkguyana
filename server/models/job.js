@@ -3,11 +3,13 @@ const mongoose = require('mongoose');
 const jobSchema = new mongoose.Schema({
     title:{
         type: String,
-        required: true
+        required: true,
+        text: true
     },
     description: {
         type: String,
         required: true,
+        
 
     },
     paymentStyle: {
@@ -85,6 +87,9 @@ const jobSchema = new mongoose.Schema({
         toObject: { virtuals: true }
     }
     )
+
+
+jobSchema.index({title: 'text' })
 
 jobSchema.virtual('proposals', {
     ref: 'Proposal',

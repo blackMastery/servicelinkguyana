@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Row, Col, Container, Modal, Form, FormControl, FormLabel } from 'react-bootstrap';
-import RateView from "../ContractRate/rateContainer";
 import {
     Panel,
     Paper,

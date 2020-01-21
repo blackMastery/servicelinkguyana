@@ -10,17 +10,31 @@ import fetch from "isomorphic-unfetch";
 import { Paper, AddBtn, SaveBtn,
    SecondaryBtn, JobButton, PrimaryBtn } from '../components/utils';
 
-import { loaded_jobs } from '../actions/action'
+import { loaded_jobs,searchReq } from '../actions/action'
 import JobPagination from '../components/Pagination/pagination';
 
 import AuthContainer from '../components/Auth/authContainer'
 import JobCard from '../components/jobCard';
 import SearchView from '../components/SearchView/searchView';
+import styled from 'styled-components'
 
 
 
 
-
+const SearchQ = styled.p`
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 21px;
+  color: #000000;
+  margin-bottom: 0px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  &:hover {
+    cursor: pointer;
+    color: ${props => props.theme.colors.secondary};
+  }
+`
 
 
 
@@ -29,6 +43,7 @@ import SearchView from '../components/SearchView/searchView';
                  constructor(props){
                     super(props)
                    this.pageChange = this.pageChange.bind(this)
+                   this.run_search = this.run_search.bind(this)
                  }
             
                 componentDidMount(){
@@ -41,8 +56,12 @@ import SearchView from '../components/SearchView/searchView';
 
                   loadJobs(page,5)
                 }
+
+                run_search(q){
+                  this.props.search_req(q, 1, 3)
+                }
                  render() {
-                   const { searchView, remaining, numofJobs, page, resultsLength } = this.props
+                   const { searchView, recentSearch, remaining, numofJobs, page, resultsLength } = this.props
                    const { _jobs } = this.props;
                    const pageData = { remaining, numofJobs, page, resultsLength, limit:5 }
                    let jobview;
@@ -78,7 +97,9 @@ import SearchView from '../components/SearchView/searchView';
                          </Row>
                          <Row>
                            <Col md={3}>
-                             <h2>Categories</h2>
+                             <h2>Recent Search</h2>
+                              {recentSearch.map((s,idx) => (<SearchQ key={idx} onClick={()=> this.run_search(s)} >{s}</SearchQ>))}
+                             
                            </Col>
                            <Col md={9}>
                              <JobSearch />
@@ -113,13 +134,17 @@ const mapStateToProps = (state) => ({
   resultsLength: state.jobs.resultsLength,
   page: state.jobs.page,
   isLogin: state.user.isLogin,
-  searchView: state.search.searchView
+  searchView: state.search.searchView,
+  recentSearch: state.search.recentSearch
+
 })
 
 
 
 const mapDispatchToProps = ( dispatch ) => ({
-  loadJobs: bindActionCreators(loaded_jobs, dispatch)
+  loadJobs: bindActionCreators(loaded_jobs, dispatch),
+  search_req: bindActionCreators(searchReq, dispatch) 
+
 })
 
 

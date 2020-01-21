@@ -102,6 +102,11 @@ export const search_view = (view) => ({
 })
 
 
+const add_search = (q) =>({
+    type: types.ADD_SEARCH,
+    q
+})
+
 
 
 
@@ -397,6 +402,7 @@ export const searchReq = (q, page, limit) => {
             json =>{
                 dispatch({ type: types.SEARCH_COMPLETE });
                 console.log(json)
+                dispatch(add_search(q))
                 return dispatch( job_search(json) )
         })
         .catch((error) => {

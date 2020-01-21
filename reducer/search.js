@@ -5,6 +5,7 @@ import * as R from 'ramda';
 
 const initialState = {
     searchResults: [],
+    recentSearch:[],
     searchView: false,
     searchError:{},
     searching: false,
@@ -16,6 +17,12 @@ const initialState = {
 
 export default (state=initialState, action) => {
     switch(action.type){
+        case types.ADD_SEARCH:
+            const {q} = action;
+            if(state.recentSearch.includes(q)){
+                return state
+            }
+            return R.merge(state, {recentSearch: [...state.recentSearch, q]})
         case types.JOB_SEARCH:
             const { remaining,
                 page, resultsLength,

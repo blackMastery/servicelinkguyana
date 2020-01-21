@@ -56,6 +56,15 @@ const Avator = styled.div`
 `;
 
 
+const PopItem = styled.div`
+font-style: normal;
+font-weight: normal;
+font-size: 15px;
+line-height: 28px;
+text-transform: capitalize;
+color: #000000;
+`;
+
 
 
 const QuickSearch = withSearch((props) => {
@@ -176,15 +185,22 @@ const NavBar =  (props) => {
           // toggle={toggle}
         >
 
-     
           <PopoverHeader>
-            {user.firstname} {user.lastname}
+            <PopItem>
+              {user.firstname} {user.lastname}
+            </PopItem>
           </PopoverHeader>
-          <PopoverBody></PopoverBody>
-          <Nav.Link href="/profile">
-                    Profile Veiw 
-          </Nav.Link>
-          <ListGroup.Item onClick={_logout}>Log-out </ListGroup.Item>
+
+          <PopoverBody>
+            <Nav.Link href="/profile">
+                <PopItem > Profile Veiw </PopItem>
+            </Nav.Link>
+            <Nav.Link>
+                <PopItem onClick={_logout}>Log-out </PopItem>
+            </Nav.Link>
+
+          </PopoverBody>     
+
         </UncontrolledPopover>
       </>
     );

@@ -6,6 +6,10 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { searchReq } from '../../actions/action';
 
+
+
+
+
 const Wrapper = styled.div`
     display: flex;
     justify-content: flex-start;

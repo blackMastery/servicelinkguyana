@@ -54,8 +54,9 @@ export const logout = () =>({
 })
 
 
-export const login_user = ({user}) => ({
+export const login_user = ({token,user}) => ({
     type: types.LOGIN,
+    token,
     user,
 })
 
@@ -133,6 +134,7 @@ export const proposal_request = (data, token) => {
 
 
 export const updateUser = (id, token, data) => {
+    console.log({id, token,data})
     return function (dispatch){
         return apiCaller(`${pathClient}/updateclientinfo/${id}`, {
           method: "PUT",

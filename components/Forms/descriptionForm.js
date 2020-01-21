@@ -39,7 +39,7 @@ export const DescriptionForm = props => {
         />
       </Form.Group>
       <Row>
-        <Col md="auto" className="ml-auto">
+        <Col md="auto" className="ml-auto" >
           <SaveBtn variant="primary" type="submit">
             Save
           </SaveBtn>

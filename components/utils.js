@@ -2,7 +2,12 @@
 import styled, { css } from "styled-components";
 import React, {useState} from 'react'
  
+import {FormControl, FormLabel,Row, Col, Container } from 'react-bootstrap';
+import { useFormik, Form, useField, Formik } from 'formik';
  
+
+
+
  export const Description = styled.div`
   width: 100%;
   margin-top: 20px;
@@ -74,7 +79,9 @@ export const ProfileAv = styled.div`
          background-size: contain;
          background-image: url(http://interglobalforest.com/assets/images/male-avatar.png);
          border-radius: 50%;
-         border: 1px solid #ccc;
+         /* border: 1px solid #ccc; */
+         border: 2px solid #F7C515;
+
        `;
 
 

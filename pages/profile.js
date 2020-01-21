@@ -30,21 +30,11 @@ import SkillColumn from '../components/SkillColumn/skillContainer'
 import AuthContainer from '../components/Auth/authContainer';
 import ModalContainer from "../components/Modals/modalContainer";
 
+import Availability from '../components/EditModule/available'
+
+import Rate from '../components/EditModule/editRate'
 
 
-
-
-const Rates = styled.div`
-    font-style: normal;
-    font-weight: 500;
-    font-size: 20px;
-    line-height: 20px;
-    text-transform: capitalize;
-    color: #000000;
-    text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
-    margin: 0px;
-
-`
 
 
  function Profile (props) {
@@ -67,10 +57,9 @@ const Rates = styled.div`
                   </Col>
                   <Col md={7}>
                     <div>
-                      <p> {firstname} {lastname} </p>
+                      <Topic> {firstname} {lastname} </Topic>
                       <p>Chaguanas, Trinidad and Tobago </p>
-                      <strong>Available:</strong>{" "}
-                      <span>As needed - open to offers</span>
+                      <Availability/>
                     </div>
                   </Col>
                   <Col md={3}>
@@ -116,9 +105,7 @@ const Rates = styled.div`
 
                       <p className="md-text">last job price</p>
 
-                      <Rates>
-                        <EditBtnPencil style={{justifyContent:'space-around'}}/>
-                        $25.00</Rates>
+                      <Rate/>
 
                       <p className="md-text">Hourly rate</p>
                     </div>

@@ -1,24 +1,8 @@
-import React,{useState} from 'react';
-import ReactDOM from 'react-dom';
-import { Formik, useField, useFormik } from 'formik';
+import React from 'react';
+import { Formik, useField, Form, useFormik } from 'formik';
 import * as Yup from 'yup';
-
-import { Row, Col, Container, Modal, Form, FormControl, FormLabel } from 'react-bootstrap';
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-
-
-import { chargingRate, est_action, cover_letter } from '../../actions/action'
-
-
-import {
-    Paper,
-    JobBadge,
-    Topic,
-    Info,
-    Description,
-    JobButton
-} from "../../components/utils";
+import { Row, Col, Container, FormControl, FormLabel } from 'react-bootstrap';
+import { SaveBtn } from "../../components/utils";
 
 
 
@@ -30,134 +14,147 @@ import {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-const dispatchSaveEst = (dispatch) => ({
-    saveEst: bindActionCreators(est_action, dispatch)
-})
-
-const estState = ( state ) => ({
-    est: state.proposal.submittedProposal.est 
-})
-
-export const SelectComp = connect(estState,dispatchSaveEst)((props) => {
-    // const [est, setEst] = useState('')
-    const options = ['one week', 'more than one week', 'three weeks',  'other']
-    const [defaultOpt]  = options
-    // props.saveEst(defaultOpt)
-    const handleChange = ({target}) =>{ 
-        const { value } = target;
-        props.saveEst(value)
-}    
-
-    const {est} = props
-    console.log(est)
+export const MySelect = ({ label, ...props }) => {
+    const [field, meta] = useField(props);
     return (
-                    <>
-                    <FormLabel>How long will this project take?</FormLabel>
-                       <FormControl as="select" name='est'
-                       value={est}
-                       onChange={handleChange}
-                       >
-                           { 
-                            options.map((opt,idx) => <option key={idx} value={opt} >{opt}</option>)
-                        }
-                       </FormControl>
-                    </>
-    
-    )
-})
+      <>
+        <FormLabel htmlFor={props.id || props.name}>{label}</FormLabel>
+        <FormControl {...field} {...props} />
+        {meta.touched && meta.error ? (
+          <div>{meta.error}</div>
+        ) : null}
+      </>
+    );
+  };
 
 
 
 
-const dispatchSaveLetter = (dispatch) => ({
-    saveCoverLetter: bindActionCreators(cover_letter, dispatch)
-})
-const coverLetterState = ( state ) => ({
-    coverLetter: state.proposal.submittedProposal.coverLetter 
-})
+export const AvailableForm = (props) => {
+    console.log(props, "AvailableForm")
+      const options = [
+        "More than 30 hr/week",
+        "Less than 30hrs/week",
+        "As needed - open to offer"
+    ];
+      return (
+          <Formik
+          initialValues ={{
+            availability: '',
+          }}
+          validationSchema={ Yup.object({
+            availability: Yup.string()
+              .oneOf(
+                  options,
+                  'Invalid  Type'
+              )
+              .required('Required')
+      
+          })}
+          onSubmit= {(values, { setSubmitting }) => {
+               console.log(values)
+               const {user,_updateUser} = props;
+               _updateUser(user._id, user.token, values)
+               props.closeModal()  
+          }}
+  
+          >
+              <Form>
+                <Container>
+  
+                  <Row className="mt-3">
+                    <Col md={6}>
+                      <p>
+                      Are you available to take on new work? Knowing when you are 
+                      available helps Service Link Guyana find the right jobs for you
+                      </p>
+                    </Col>
+  
+                    <Col md={6}>
+                          <MySelect as="select" label="Select Your Availability!" name="availability">
+                              { 
+                              options.map((opt,idx) => <option key={idx} value={opt} >{opt}</option>)
+                            }
+                        </MySelect> 
+                      </Col>
+                  </Row>
+  
+                  <Row className="mt-3" >
+                    <Col>
+                      <SaveBtn className="ml-auto" variant="primary" type="submit">Save</SaveBtn>
+                    </Col>
+                  </Row>
+              </Container>
+         
+              </Form>
+  
+          </Formik>
+  
+      )
+  }
+  
 
-// 
-export const CoverLetter = connect(coverLetterState, dispatchSaveLetter)((props) =>{
-    const handleChange = (event) =>{ 
-        props.saveCoverLetter(event.target.value)
-    }
-    // const _blur = () => 
-    const { coverLetter } = props
 
-    return (
-            <Form.Group >
-                <Form.Label style={{ marginBottom: "1.2rem" }}>
-                    {" "}
-                    <Topic> Cover letter </Topic>
-                </Form.Label>
-                <Form.Control
-                    as="textarea"
-                    rows="3"
-                    name="description"
-                        value={coverLetter}
-                    onChange={handleChange}
-                />
-            </Form.Group>
-    )
-})
-
-
-
-
-const dispatchSaveRate = (dispatch) => ({
-    saveRate: bindActionCreators(chargingRate, dispatch)
-})
-
-
-
-
-const RateForm = (props) => {
-
-    const [rate, setRate] = useState('')
-
-    const handleChange = (event) => {
-        setRate(event.target.value)
-    }
-    const _submit = (e) => {
-        e.preventDefault()
-        props._save(rate)
+const TextFeild = ({ label, ...props }) =>{
+  const [field, meta] = useField(props);
+  return (
+      <>
+      <FormLabel htmlFor={props.id || props.name}>{label}</FormLabel>
+      <FormControl  {...field} {...props} />
+      {meta.touched && meta.error ? (
+        <div className="error">{meta.error}</div>
+      ) : null}
+    </>
+  )
 }
-    return (
-        <Form onSubmit={_submit}>
 
-            <Form.Group controlId="formBasicEmail">
-                <Form.Control
-                as='input'
-                type='number'
-                required
-                onChange={handleChange}
-                />
-            </Form.Group>
+
+
+ export  const RateForm = (props) => {
+
+
+    return (
+      <Formik
+      
+      initialValues ={{
+        rate: 0,
+      }}
+      validationSchema={ Yup.object({
+        rate: Yup.number().required('Required'),
+  
+      })}
+      onSubmit= {(values, { setSubmitting }) => {
+           console.log(values)
+           const {user,_updateUser} = props;
+           _updateUser(user._id, user.token, values)
+           props.closeModal()  
+      }}
+      >
+        <Form>
+          <Container>
+                 <Row>
+                   <Col>
+                      <TextFeild 
+                      as='input'
+                      type='number'
+                      label="Rates"
+                      name='rate'
+
+                      />
+                   </Col>
+                 </Row> 
+
+
+                <Row className="mt-3" >
+                    <Col>
+                      <SaveBtn className="ml-auto" variant="primary" type="submit">Save</SaveBtn>
+                    </Col>
+              </Row>       
+          </Container>
         </Form>
+      </Formik>
     )
-}
+  }
 
 
-const RateContainer = (props) =>  {
-        const _save = (data) => {
-            props.saveRate(data)
-        }
-            return (
-               <RateForm _save={_save}/>
-            )
-        }
 
-export const Rate = connect(null, dispatchSaveRate)(RateContainer)

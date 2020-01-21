@@ -145,6 +145,10 @@ const userSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
+    rate:{
+        type: Number,
+        default:0
+    },
     paidAvgHourlyRate: Number,
     joined: {
         type: Date,

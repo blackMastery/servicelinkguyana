@@ -27,7 +27,7 @@ const initialState = {
 const user = (state = initialState, action ) => {
     switch (action.type){
         case types.LOGIN: 
-            return Object.assign({}, {...action.user}, {isLogin: true});
+            return Object.assign({}, {...action.user}, {token: action.token}, {isLogin: true});
         case types.LOGOUT:
             return initialState
         case types.ADD_EMPLOYMENT:

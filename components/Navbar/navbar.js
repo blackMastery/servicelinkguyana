@@ -160,17 +160,14 @@ const NavBar =  (props) => {
 
      
        
-          <Link href="#">
+          <Link href="/job/archived" >
             <ListGroup.Item> My Jobs </ListGroup.Item>
           </Link>
-          <Link href="#">
-            <ListGroup.Item> Saved Jobs </ListGroup.Item>
-          </Link> 
-          <Link href="#">
+          <Link href="/contacts/all">
             <ListGroup.Item> My Contacts </ListGroup.Item>
           </Link>
 
-          <Link href="#">
+          <Link href="/proposal/archived">
             <ListGroup.Item> Proposals </ListGroup.Item>
           </Link>
         </UncontrolledPopover>

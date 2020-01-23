@@ -10,12 +10,11 @@ const proposalSchema = new Schema({
     },
     provider: {
         type: Schema.ObjectId,
-        ref: 'ServiceProvider'
+        ref: 'User'
     },
     job: {
         type: Schema.ObjectId,
-        ref: 'Job'
-        
+        ref: 'Job'    
     },
     coverLetter: {
         type: String

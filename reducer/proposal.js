@@ -26,9 +26,14 @@ const initialState = {
 
 
 
+
 const submitted = (state={} , action) => {
 
     switch(action.type){
+        case types.PROPOSALS_RECEIVED:
+            console.log(action)
+            return R.merge(state,{proposals: [...action.proposals]})
+
         case types.HOUR_RATE:
             // const {hourRate} = action;
             return Object.assign({},state, { hourRate: action.hourRate })
@@ -63,6 +68,9 @@ const validated = (state, action) =>{
 export  const proposal = (state=initialState, action) => {
 
     switch (action.type) {
+        case types.PROPOSALS_RECEIVED:
+            return R.merge(state,{proposals: [...action.proposals]})
+
         case types.HOUR_RATE:
             return Object.assign({}, state, 
                 {submittedProposal: submitted(state.submittedProposal, action)});

@@ -4,8 +4,8 @@ import Layout from '../layout';
 import { Row, Col, Container } from 'react-bootstrap';
 import JobSearch from '../components/Search/jobsearch'
 import { connect } from "react-redux";
-
 import { bindActionCreators } from "redux";
+
 import fetch from "isomorphic-unfetch";
 import { Paper, AddBtn, SaveBtn,
    SecondaryBtn, JobButton, PrimaryBtn } from '../components/utils';

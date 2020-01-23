@@ -19,7 +19,8 @@ const {
   addEmployment,
   deleteEducation,
   addSkill,
-  deleleteSkill
+  deleleteSkill,
+  getProposals
 } = require("../../controllers/user");
 const { signup, login, protect } = require("../../controllers/auth");
 
@@ -40,7 +41,7 @@ router.get("/jobslist", getAllJob);
 
 
 
-
+router.get('/proposals/:id', getProposals)
 router.route("/skills/:id", protect).put(addSkill);
 
 

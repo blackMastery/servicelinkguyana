@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import Router from 'next/router'
+import { useRouter } from 'next/router';
 
 import ProposalView from './proposalView';
 import { SelectComp, CoverLetter, Rate } from '../../components/Forms/formUtils'
@@ -22,15 +23,12 @@ import * as Yup from 'yup';
 
 
 
-class Proposal extends React.Component {
-    constructor(props){
-        super(props)
-        this._submit = this._submit.bind(this)
-    }
+const Proposal = (props) => {
+    const router = useRouter()
     
-    _submit(data){
-        const { user, jobId } = this.props
-        this.props.saveIds(user._id, jobId)
+    const _submit = (data) => {
+        const { user, jobId } =  props
+        props.saveIds(user._id, jobId)
         const proposal =  Object.assign({},
             data,
              {
@@ -39,16 +37,16 @@ class Proposal extends React.Component {
              }
             );
         console.log(proposal)
-        this.props.saveProposal(proposal, this.props.user.token)
+        props.saveProposal(proposal, this.props.user.token)
+        router.push('/proposal/archived')
     }
         
 
         
 
-    render(){
-        console.log(this.props)
-        return(<ProposalView _submit={this._submit} />)
-        }
+    
+        return(<ProposalView _submit={_submit} />)
+        
 }
 
 

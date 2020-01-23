@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Row, Col, Container, Form, Modal } from 'react-bootstrap';
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
 
 const isServer = typeof window === 'undefined'
 

@@ -295,9 +295,7 @@ export const AddSkillAction = (skill, token, userid) => {
           method: "PUT",
             headers: {
               "Content-Type": "application/json",
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
+              Authorization: `Bearer ${token}`
             },
          body: JSON.stringify(skill)
           
@@ -412,5 +410,34 @@ export const searchReq = (q, page, limit) => {
             error: error})
         })
                     
+    }
+}
+
+
+const proposals_received = ({proposals}) => ({
+    type: types.PROPOSALS_RECEIVED,
+    proposals
+})
+
+export const getProposals = (id,token) => {
+    const path = `${pathClient}/proposals/${id}`;
+        console.log({path, token})
+
+    return function(dispatch){
+        dispatch({type: types.LOADING_PROPOSALS})
+        return apiCaller(path,{
+            method:'GET',
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+              },
+
+        })
+        .then((json) => {
+           return dispatch( proposals_received(json) )
+        })
+        .catch((error) => {
+            console.log(error)
+        })
     }
 }

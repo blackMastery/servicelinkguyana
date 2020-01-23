@@ -2,6 +2,7 @@ const Job = require('../models/job')
 const factory = require('./handlerFactory');
 const User = require('../models/user')
 const {get} = require('../utils/queryTools')
+const Proposal = require('../models/proposal')
 
 
 /**
@@ -182,6 +183,16 @@ exports.deleleteSkill = catchAsync( async ( req, res, next ) => {
       statCode: 200
     })
 
+})
+
+
+
+exports.getProposals = catchAsync( async (req, res, next) => {
+  const {id} = req.params;
+  const proposals = await Proposal.find({provider:id}).populate('job')
+
+  res.status(200)
+  .json({proposals})
 })
 
 

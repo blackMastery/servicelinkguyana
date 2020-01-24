@@ -30,9 +30,12 @@ const SearchQ = styled.p`
   margin-bottom: 0px;
   padding-top: 8px;
   padding-bottom: 8px;
+  padding-left: 8px;
   &:hover {
     cursor: pointer;
     color: ${props => props.theme.colors.secondary};
+    border-left: 2px solid #09B4A1;
+    background-color: white;
   }
 `
 

@@ -62,12 +62,7 @@ exports.jobSearch = catchAsync(async(req,res,next)=>{
             }
         
     })
-    // const page = req.query.page * 1 || 1;
-    // const limit = req.query.limit * 1 || 100;
-    // const skip = ( page - 1 ) * limit;
 
-    
-    
     
     const searchResults = await query;
     const features =  new APIFeatures(query, req.query)

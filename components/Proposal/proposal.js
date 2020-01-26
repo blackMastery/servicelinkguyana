@@ -25,10 +25,11 @@ import * as Yup from 'yup';
 
 const Proposal = (props) => {
     const router = useRouter()
-    
+    console.log(props)
+
     const _submit = (data) => {
         const { user, jobId } =  props
-        props.saveIds(user._id, jobId)
+        // props.saveIds(user._id, jobId)
         const proposal =  Object.assign({},
             data,
              {
@@ -37,7 +38,12 @@ const Proposal = (props) => {
              }
             );
         console.log(proposal)
-        props.saveProposal(proposal, this.props.user.token)
+        try {
+            props.saveProposal(proposal, props.user.token)
+
+        }catch(err){
+            console.log(err)
+        }
         router.push('/proposal/archived')
     }
         

@@ -7,7 +7,8 @@ const {
   getJob,
   updateJob,
   getAllJob,
-  jobSearch
+  jobSearch,
+  jobTest
 } = require("../../controllers/jobs");
 
 const {
@@ -28,6 +29,8 @@ const { signup, login, protect } = require("../../controllers/auth");
 
 
 router.post("/signup", signup);
+
+router.get('/test', jobTest)
 
 router.put("/updateclientinfo/:id", protect, updateDesc);
 

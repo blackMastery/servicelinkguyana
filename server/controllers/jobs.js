@@ -50,11 +50,70 @@ exports.getJob = catchAsync( async (req, res, next) => {
 
 })
 
+
+
+
+
+exports.jobTest = catchAsync( async (req, res, next) =>{
+    
+
+
+    const { q } = req.query;
+    console.log(q)
+    let queryObj = { ...req.query };
+
+    const excludedFields = ['q'];
+    excludedFields.forEach(el => delete queryObj[el]);
+
+    let queryStr = JSON.stringify(queryObj);
+
+     queryObj = JSON.parse(queryStr);
+    
+    let query = Job.find({
+        
+        $text: {
+            $search: q,
+            $caseSensitive: false
+        }
+        
+    });
+    
+    const { experienceLevel= '' } = queryObj;
+    if(experienceLevel !== ''){
+        query = query.find({ experienceLevel }) 
+    }
+
+
+    for (key in queryObj){
+        let value = queryObj[key]
+        let [low, high] = value.split('-')
+        lo = low;
+        console.log({ l:low++, h:high++ , key})
+        query = query.gte(key,low).lte(key,high)
+
+
+    }
+
+    console.log(lo)
+
+    const jobs = await query
+    res.status(200)
+        .json({ jobs })
+})
+
 exports.jobSearch = catchAsync(async(req,res,next)=>{
     const {q} = req.query;
-    console.log(q)
-    
-    const query =  Job.find({
+    let queryObj = { ...req.query };
+    const {page,limit} = req.query;
+
+    const excludedFields = ['q','page','limit'];
+    excludedFields.forEach(el => delete queryObj[el]);
+
+    let queryStr = JSON.stringify(queryObj);
+
+    queryObj = JSON.parse(queryStr);
+
+    let query =  Job.find({
         
             $text:{
                 $search: q,
@@ -63,9 +122,25 @@ exports.jobSearch = catchAsync(async(req,res,next)=>{
         
     })
 
+    const { experienceLevel = '' } = queryObj;
+    if (experienceLevel !== '') {
+        query = query.find({ experienceLevel })
+    }
+
+
+    for (key in queryObj) {
+        let value = queryObj[key]
+        let [low, high] = value.split('-')
+        lo = low;
+        console.log({ l: low++, h: high++, key })
+        query = query.gte(key, low).lte(key, high)
+
+
+    }
+
     
     const searchResults = await query;
-    const features =  new APIFeatures(query, req.query)
+    const features = new APIFeatures(query, { page, limit })
     .paginate()
     
     

@@ -33,6 +33,7 @@ const ProposalView = ( props ) => {
             onSubmit={(values) => {
                 console.log(values);
                 props._submit(values)
+                
                 }}
             
                 validationSchema={Yup.object({
@@ -52,6 +53,7 @@ const ProposalView = ( props ) => {
                 coverLetter: ''
                 }}
             >
+
 
 
         { formik =>(

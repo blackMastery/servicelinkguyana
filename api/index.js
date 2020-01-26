@@ -47,6 +47,7 @@ export const updateUser = async (path, data ) => {
 async function postData(url = '', data = {}) {
     // Default options are marked with *
     const response = await fetch(url, {
+        
         method: 'POST', // *GET, POST, PUT, DELETE, etc.
         // credentials: 'same-origin', // include, *same-origin, omit
         headers: {

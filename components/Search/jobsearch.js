@@ -7,6 +7,7 @@ import { bindActionCreators } from "redux";
 import { searchReq } from '../../actions/action';
 import Accordion from 'react-bootstrap/Accordion'
 import { Col, Row, Card, Button } from 'react-bootstrap';
+import * as R from 'ramda';
 
 import Form from 'react-bootstrap/Form'
 
@@ -46,6 +47,35 @@ const SearchBtn = styled.button`
 `;
 
 
+
+const _package = (params) =>{
+    let parseObj
+    for(let key in params){
+        
+        if(params[key]){
+            console.log(key)
+            if (key === 'entry' || key === 'intermediate' || key === 'expert') {
+                parseObj = R.merge({}, parseObj, { experinceLevel: key })
+            }
+            else if (key === 'dailyrate' || key === 'fixedprice') {
+                parseObj = R.merge({}, parseObj, { paymentStyle: key })
+            }
+             else if (key === 'onetime' || key === 'ongoingproject') {
+                parseObj = R.merge({}, parseObj, { jobType: key })
+
+            }
+
+        }
+
+
+    }
+
+    return parseObj
+}
+
+
+
+
 const SearchForm = (props) => {
     // console.log(props)
 
@@ -55,6 +85,12 @@ const SearchForm = (props) => {
             entry: false,
             intermediate: false,
             expert: false,
+
+            ongoingproject: false,
+
+            dailyrate: false,
+            fixedprice: false,
+            onetime: false,
             "200-1000": false,
             "500-10000": false,
             "1000-20000": false,
@@ -68,6 +104,9 @@ const SearchForm = (props) => {
             entry: Yup.boolean(),
             intermediate: Yup.boolean(),
             expert: Yup.boolean(),
+            fixedprice: Yup.boolean(),
+            ongoingproject: Yup.boolean(),
+            onetime: Yup.boolean(),
             "200-1000": Yup.boolean(),
             "500-10000": Yup.boolean(),
             "1000-20000": Yup.boolean(),
@@ -77,7 +116,9 @@ const SearchForm = (props) => {
 
         }),
         onSubmit: values => {
-          console.log(values)
+            // delete values.search;
+            console.log(values)
+            console.log(_package(values))
         //   props.run_search(values.search)
         },
       });
@@ -128,19 +169,41 @@ return (
                     <p>Budget</p>
                     <Form.Group controlId="Budget">
                         <Form.Check type="checkbox" {...formik.getFieldProps('expert')} label="200-1000" />
-                        <Form.Check type="checkbox" label="500-10000" {...formik.getFieldProps('500-10000')}  />
-                        <Form.Check type="checkbox" label="1000-20000" {...formik.getFieldProps('1000-20000')} />
+                        <Form.Check type="checkbox"  label="500-10000" {...formik.getFieldProps('500-10000')}  />
+                        <Form.Check type="checkbox"  label="1000-20000" {...formik.getFieldProps('1000-20000')} />
                     </Form.Group>
             </Col>
 
             <Col md="auto">
 
-                    <p>Number of Proposals</p>
+                    <p>Job type</p>
                     <Form.Group controlId="proposals">
-                        <Form.Check type="checkbox" label="1-5" {...formik.getFieldProps("1-5")} />
-                        <Form.Check type="checkbox" label="5-10" {...formik.getFieldProps('5-10')} />
-                        <Form.Check type="checkbox" label="10-20"  {...formik.getFieldProps('10-20')} />
+                        <Form.Check type="checkbox" 
+                         label="one time project" 
+                        {...formik.getFieldProps("onetime")} />
+                        <Form.Check type="checkbox" 
+                        label="ongoing project" 
+                        {...formik.getFieldProps("ongoingproject")} />
+
                     </Form.Group>
+            </Col> 
+
+
+
+            <Col md="auto">
+
+                <p>Payment Style</p>
+                <Form.Group controlId="proposals">
+                    <Form.Check type="checkbox"
+                        label="daily rate"
+                        {...formik.getFieldProps("dailyrate")} 
+                    />
+                <Form.Check type="checkbox"
+                    label="fixed price"
+                    {...formik.getFieldProps("fixedprice")}
+                />
+                 
+                </Form.Group>
             </Col> 
     </Row> 
         </Card.Body>

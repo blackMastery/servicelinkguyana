@@ -15,9 +15,10 @@ export default class ProposalTable extends React.Component {
     render (){
         const {user, proposals }  = this.props;
         const list = proposals.map((proposal,idx) =>{
-          const {job, est,hourRate }  = proposal;
-          const { title,cost, paymentStyle,createdAt, experienceLevel  } = job
-          return { title,cost, paymentStyle,createdAt, experienceLevel,job, est, hourRate  }
+          const { job, est, rate, createdAt }  = proposal;
+          const { title,cost, paymentStyle, experienceLevel  } = job;
+
+          return { title,cost, paymentStyle,createdAt, experienceLevel,job, est, rate  }
         } )
         if(!user.isLogin && proposals.length < 1) return null;
         console.log(proposals)  

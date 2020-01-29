@@ -3,7 +3,6 @@ import { apiCaller } from '../api'
 
 
 
-
 const pathClient = `/api/v1/client`
 
 export const add_education = ({ education: { education}}) =>({
@@ -139,6 +138,7 @@ export const proposal_request = (data, token) => {
 
 
 export const updateUser = (id, token, data) => {
+    
     console.log({id, token,data})
     return function (dispatch){
         return apiCaller(`${pathClient}/updateclientinfo/${id}`, {
@@ -148,11 +148,24 @@ export const updateUser = (id, token, data) => {
             Authorization: `Bearer ${token}`
           },
           body: JSON.stringify(data)
-        }).then(json => {
-          console.log(json);
-          return dispatch(updateUserInfo(json));
-        });
-    }
+        })    
+        .then(json => {
+        //   console.log(json);
+          const {status} = json;
+          if(status !== 'success'){
+               throw json
+            }
+            return dispatch(updateUserInfo(json));
+        },
+        (error) => {
+
+            console.log(error, "catched error");
+            return error;
+
+        }
+
+     );
+}
 }
 
 
@@ -383,8 +396,28 @@ export const turn_off_search = () =>({
     type: types.TURN_OFF_SEARCH_VIEW
 })
 
-export const searchReq = (q, page, limit) => {
-    const path = `${pathClient}/job/search?q=${q}&limit=${limit}&page=${page}`;
+
+function stringMe(obj) {
+    // let str = ''
+    for (let k in obj) {
+        return `${k}=${obj[k]}`
+    }
+}
+
+
+
+
+function serialize(arr) {
+    return arr.reduce((curr, nex) => {
+
+        return curr + `&${stringMe(nex)}`
+    }, '')
+}
+
+export const searchReq = (q, filters, page, limit) => {
+    console.log(filters)
+   const query = filters ? serialize(filters) : '';
+    const path = `${pathClient}/job/search?q=${q}&limit=${limit}&page=${page}${query}`;
     
     return function (dispatch) {
         dispatch({type: types.SEARCHING})
@@ -434,6 +467,7 @@ export const getProposals = (id,token) => {
 
         })
         .then((json) => {
+            
            return dispatch( proposals_received(json) )
         })
         .catch((error) => {

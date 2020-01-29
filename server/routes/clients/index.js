@@ -8,7 +8,8 @@ const {
   updateJob,
   getAllJob,
   jobSearch,
-  jobTest
+  jobTest,
+  getMyJobs
 } = require("../../controllers/jobs");
 
 const {
@@ -37,14 +38,19 @@ router.put("/updateclientinfo/:id", protect, updateDesc);
 router.post("/login", login);
 
 router.post("/newjob", createJob);
+
 router.get("/job/search", jobSearch)
 
 router.get('/job/:id', getJob);
+
+router.get('/myjob/:id', getMyJobs);
+
 router.get("/jobslist", getAllJob);
 
 
 
 router.get('/proposals/:id', getProposals)
+
 router.route("/skills/:id", protect).put(addSkill);
 
 

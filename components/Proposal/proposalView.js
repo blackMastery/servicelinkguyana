@@ -17,9 +17,24 @@ import { Formik, useField, useFormik } from 'formik';
 import * as Yup from 'yup';
 import InputGroup from 'react-bootstrap/InputGroup'
 
+import styled from 'styled-components';
+
+
+const ErrNote = styled.div`
+    color: red;
+    text-transform: capitalize;
+
+`;
+
+
+
+
+
+
 const ProposalView = ( props ) => {
     const options = ['one week', 'more than two weeks','three weeks','other'];
-    const [defaultOpt]  = options
+    const [defaultOpt]  = options;
+    const valid = false;
 
     return (
         
@@ -38,7 +53,7 @@ const ProposalView = ( props ) => {
             
                 validationSchema={Yup.object({
                     coverLetter: Yup.string().required(),
-                rate: Yup.number().required('Required'),
+                rate: Yup.number().min(1).required('Required'),
                 est: Yup.string()
                 .oneOf(
                     options,
@@ -78,11 +93,13 @@ const ProposalView = ( props ) => {
                             <Form.Group 
                             controlId="rate"
                             >
+                            <ErrNote>{formik.errors.rate}</ErrNote>
                             <Form.Control 
                                 placeholder="$" 
                                 name="rate"
                                 as="input"
                                 type="number"
+                                isInvalid={valid}
                                 {...formik.getFieldProps('rate')}
                                 
                             />
@@ -97,12 +114,14 @@ const ProposalView = ( props ) => {
                             as="select"
                             name='est'
                             id="est"
+                            isInvalid={valid}
                             {...formik.getFieldProps('est')}
                             >
                             { 
                             options.map((opt,idx) => <option key={idx} value={opt} >{opt}</option>)
                             }
                         </FormControl>
+                        <ErrNote>{formik.errors.est}</ErrNote>
                     </Col>
                 </Row>
 
@@ -113,6 +132,8 @@ const ProposalView = ( props ) => {
 
                 <Row>
                     <Col md={12}>
+
+                        <ErrNote>{formik.errors.coverLetter}</ErrNote>
                         <Form.Group controlId="coverLetter"  controlId="formBasicEmail">
                             <Form.Label style={{ marginBottom: "1.2rem" }}>
                                 {" "}

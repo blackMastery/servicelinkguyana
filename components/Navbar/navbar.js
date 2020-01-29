@@ -81,7 +81,7 @@ const QuickSearch = withSearch((props) => {
       }),
     onSubmit: values => {
     //   console.log(values)
-      props.search_req(values.search)
+      props.search_req(values.search,_)
       router.push('/jobfeeds')
     },
   });

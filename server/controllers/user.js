@@ -189,7 +189,10 @@ exports.deleleteSkill = catchAsync( async ( req, res, next ) => {
 
 exports.getProposals = catchAsync( async (req, res, next) => {
   const {id} = req.params;
-  const proposals = await Proposal.find({provider:id}).populate('job')
+  const proposals = await Proposal.find({provider:id}).populate({
+    path: 'job',
+    select: 'title cost proposals duration experienceLevel jobType hourlyRate paymentStyle'
+  })
 
   res.status(200)
   .json({proposals})

@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
-import { useFormik } from 'formik';
+import { useFormik,  } from 'formik';
 import * as Yup from 'yup';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -48,32 +48,22 @@ const SearchBtn = styled.button`
 
 
 
-const _package = (params) =>{
-    let parseObj
-    for(let key in params){
-        
-        if(params[key]){
-            console.log(key)
-            if (key === 'entry' || key === 'intermediate' || key === 'expert') {
-                parseObj = R.merge({}, parseObj, { experinceLevel: key })
-            }
-            else if (key === 'dailyrate' || key === 'fixedprice') {
-                parseObj = R.merge({}, parseObj, { paymentStyle: key })
-            }
-             else if (key === 'onetime' || key === 'ongoingproject') {
-                parseObj = R.merge({}, parseObj, { jobType: key })
+function processData(obj) {
+    let res = [];
+    for (let key in obj) {
+        let valObj = obj[key]
+        for (let k in valObj) {
+            if (valObj[k]) {
+                console.log()
+                res.push({ [key]: k.split('_').join(" ") })
+
 
             }
 
         }
-
-
     }
-
-    return parseObj
+    return res
 }
-
-
 
 
 const SearchForm = (props) => {
@@ -82,44 +72,50 @@ const SearchForm = (props) => {
     const formik = useFormik({
         initialValues: {
             search: '',
-            entry: false,
-            intermediate: false,
-            expert: false,
-
-            ongoingproject: false,
-
-            dailyrate: false,
-            fixedprice: false,
-            onetime: false,
+            experienceLevel:{
+                entry: false,
+                intermediate: false,
+                expert: false
+            },
+            
+            paymentStyle:{
+                daily_rate: false,
+                fixed_price: false
+            },
+            jobtype:{
+                ongoing_project: false,
+                one_time: false,
+            },
+            cost:{
             "200-1000": false,
             "500-10000": false,
-            "1000-20000": false,
-            "1-5": false,
-            "5-10": false,
-            "10-20": false
+            "1000-20000": false
+            },
+         
 
         },
-        validationSchema: Yup.object({
-            search: Yup.string(),
-            entry: Yup.boolean(),
-            intermediate: Yup.boolean(),
-            expert: Yup.boolean(),
-            fixedprice: Yup.boolean(),
-            ongoingproject: Yup.boolean(),
-            onetime: Yup.boolean(),
-            "200-1000": Yup.boolean(),
-            "500-10000": Yup.boolean(),
-            "1000-20000": Yup.boolean(),
-            "1-5": Yup.boolean(),
-            "5-10": Yup.boolean(),
-            "10-20": Yup.boolean()
+        // validationSchema: Yup.object({
+        //     search: Yup.string(),
+        //     entry: Yup.boolean(),
+        //     intermediate: Yup.boolean(),
+        //     expert: Yup.boolean(),
+        //     fixedprice: Yup.boolean(),
+        //     ongoingproject: Yup.boolean(),
+        //     onetime: Yup.boolean(),
+        //     "200-1000": Yup.boolean(),
+        //     "500-10000": Yup.boolean(),
+        //     "1000-20000": Yup.boolean(),
+        //     "1-5": Yup.boolean(),
+        //     "5-10": Yup.boolean(),
+        //     "10-20": Yup.boolean()
 
-        }),
+        // }),
         onSubmit: values => {
-            // delete values.search;
-            console.log(values)
-            console.log(_package(values))
-        //   props.run_search(values.search)
+            const q = values.search
+            const filters = processData(R.omit(['search'],values));
+            console.log({q,filters});
+            props.run_search(q,filters)
+
         },
       });
 
@@ -150,27 +146,33 @@ return (
                 <Col md="auto">
                     <p>Experience Level</p>
                         <Form.Group controlId="Experience">
+
+
                             <Form.Check 
                             type="checkbox"
-                            {...formik.getFieldProps('entry')} 
-                            name="entry"
+                            {...formik.getFieldProps('experienceLevel.entry')} 
+                            name="experienceLevel.entry"
                             label="entry" />
+
                             <Form.Check type="checkbox"
-                            {...formik.getFieldProps('intermediate')} 
-                            name="intermediate"
+                            {...formik.getFieldProps('experienceLevel.intermediate')} 
+                            name="experienceLevel.intermediate"
                             label="intermediate" />
+
                             <Form.Check type="checkbox" 
-                            name="expert" label="expert" 
-                            {...formik.getFieldProps('expert')} />
+                                name="experienceLevel.expert"
+                                label="expert" 
+                                {...formik.getFieldProps('experienceLevel.expert')}
+                                 />
                         </Form.Group>
                 </Col>        
 
             <Col md="auto">
                     <p>Budget</p>
                     <Form.Group controlId="Budget">
-                        <Form.Check type="checkbox" {...formik.getFieldProps('expert')} label="200-1000" />
-                        <Form.Check type="checkbox"  label="500-10000" {...formik.getFieldProps('500-10000')}  />
-                        <Form.Check type="checkbox"  label="1000-20000" {...formik.getFieldProps('1000-20000')} />
+                                    <Form.Check type="checkbox" {...formik.getFieldProps('cost.200-1000')} label="200-1000" />
+                                    <Form.Check type="checkbox" label="500-10000" {...formik.getFieldProps('cost.500-10000')}  />
+                                    <Form.Check type="checkbox" label="1000-20000" {...formik.getFieldProps('cost.1000-20000')} />
                     </Form.Group>
             </Col>
 
@@ -180,10 +182,10 @@ return (
                     <Form.Group controlId="proposals">
                         <Form.Check type="checkbox" 
                          label="one time project" 
-                        {...formik.getFieldProps("onetime")} />
+                        {...formik.getFieldProps("jobtype.one_time")} />
                         <Form.Check type="checkbox" 
                         label="ongoing project" 
-                        {...formik.getFieldProps("ongoingproject")} />
+                        {...formik.getFieldProps("jobtype.ongoing_project")} />
 
                     </Form.Group>
             </Col> 
@@ -196,11 +198,11 @@ return (
                 <Form.Group controlId="proposals">
                     <Form.Check type="checkbox"
                         label="daily rate"
-                        {...formik.getFieldProps("dailyrate")} 
+                        {...formik.getFieldProps("paymentStyle.daily_rate")} 
                     />
                 <Form.Check type="checkbox"
                     label="fixed price"
-                    {...formik.getFieldProps("fixedprice")}
+                    {...formik.getFieldProps("paymentStyle.fixed_price")}
                 />
                  
                 </Form.Group>
@@ -230,9 +232,9 @@ export const withSearch = (Comp) => connect(null,mapSearchToProps)(function (pro
 })
 
 const JobSearch = (props) => {
-   const run_search = (q) =>{
+   const run_search = (q,filters) =>{
        console.log(q)
-       props.search_req(q, 1, 2)
+       props.search_req(q, filters, 1, 2)
     }
 
     return (<SearchForm run_search={run_search} />)

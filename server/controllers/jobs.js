@@ -6,11 +6,24 @@ const factory = require("./handlerFactory");
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
-const User = require('../models/user')
-const APIFeatures = require('../utils/apiFeatures')
+const User = require('../models/user');
+const R = require('ramda')
+
+const APIFeatures = require('../utils/apiFeatures');
 
 
+const numericQuery = (query, queryObj) => {
+ 
+    for (key in queryObj) {
+        let value = queryObj[key]
+        if(value === undefined) return query;
+        let [low, high] = value.split('-')
+        console.log({ l: low++, h: high++, key })
 
+        query = query.gte(key, low++).lte(key, high++)
+    }
+    return query
+}
 exports.createJob = catchAsync(async (req, res, next) => {
     const { body } = req;
 
@@ -101,6 +114,27 @@ exports.jobTest = catchAsync( async (req, res, next) =>{
         .json({ jobs })
 })
 
+
+
+exports.getMyJobs = catchAsync( async (req, res, next) => {
+    const { id } = req;
+    // const jobs = await Job.aggregate([
+    //     {
+    //         $match: {user: {$eq: id}}
+    //     }
+    // ])
+
+    const jobs = await Job.where('user').equals(id)
+
+
+    console.log(jobs, id)
+    res.status(200)
+    .json({
+        status: "success",
+        jobs
+    })
+})
+
 exports.jobSearch = catchAsync(async(req,res,next)=>{
     const {q} = req.query;
     let queryObj = { ...req.query };
@@ -113,32 +147,32 @@ exports.jobSearch = catchAsync(async(req,res,next)=>{
 
     queryObj = JSON.parse(queryStr);
 
+    
+    
+    // excute search query 
     let query =  Job.find({
         
             $text:{
                 $search: q,
                 $caseSensitive: false
             }
+            
+        })
+
+
+    // check for filter query if any excute them
+
+    // console.log(queryObj)    
+
+    if(!R.isEmpty(queryObj)){
+        const stringFilters = R.pick(["experienceLevel", "paymentStyle", "jobType"], queryObj);
+        const cost = R.pick('cost', queryObj)
+         console.log(stringFilters, cost)
+        query = query.find(stringFilters)
+        query = numericQuery(query,cost)
+            
+    }
         
-    })
-
-    const { experienceLevel = '' } = queryObj;
-    if (experienceLevel !== '') {
-        query = query.find({ experienceLevel })
-    }
-
-
-    for (key in queryObj) {
-        let value = queryObj[key]
-        let [low, high] = value.split('-')
-        lo = low;
-        console.log({ l: low++, h: high++, key })
-        query = query.gte(key, low).lte(key, high)
-
-
-    }
-
-    
     const searchResults = await query;
     const features = new APIFeatures(query, { page, limit })
     .paginate()

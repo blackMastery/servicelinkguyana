@@ -1,4 +1,5 @@
 import types from '../actions/actionTypes'
+import { useRouter } from 'next/router';
 
 
 const initialState = {

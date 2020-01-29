@@ -68,7 +68,8 @@ export const apiCaller = (path, options) => {
 //        config );
 
     return fetch(`${baseUrl}${path}`,options)
-            .then(res => res.json(),
-                error => console.log(error))
-    
+            .then(res => res.json())
+            .catch(error => {
+                throw error
+            })
 }

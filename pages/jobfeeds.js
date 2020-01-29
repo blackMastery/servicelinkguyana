@@ -112,17 +112,6 @@ const SearchQ = styled.p`
 
                            </Col>
                          </Row>
-
-
-                              {/* <Row>
-                                <Col md={3}>
-                                </Col>
-                                <Col md={9}>
-                                
-                                
-                                
-                                </Col>
-                              </Row> */}
                        </Container>
                      </Layout>
                    );

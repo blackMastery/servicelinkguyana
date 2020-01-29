@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 const Archive  = ( props ) => {
+    // if(props.proposals) return null;
       
     return (<Layout>
         <h1>My Proposals</h1>

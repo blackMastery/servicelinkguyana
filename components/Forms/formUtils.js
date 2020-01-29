@@ -126,7 +126,12 @@ const TextFeild = ({ label, ...props }) =>{
       onSubmit= {(values, { setSubmitting }) => {
            console.log(values)
            const {user,_updateUser} = props;
-           _updateUser(user._id, user.token, values)
+           try{
+             _updateUser(user._id, user.token, values)
+
+           }catch(error){
+             console.log(error)
+           }
            props.closeModal()  
       }}
       >

@@ -5,6 +5,9 @@ const proposalSchema = new Schema({
     hourRate: {
         type: Number,
     },
+    rate: {
+        type: Number,
+    },
     fixedRate:  {
         type: Number
     },
@@ -18,6 +21,10 @@ const proposalSchema = new Schema({
     },
     coverLetter: {
         type: String
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
     },
     est: {
         type: String,

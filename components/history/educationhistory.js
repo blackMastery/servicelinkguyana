@@ -51,7 +51,7 @@ const EditOverLay = ({ id, user, deleteHandler, showModal, editHandler}) => {
 }
 
 const EduView = (props) => {
-  const { _id, user, education, deleteHandler, _handler } = props;
+  const { _id, user, education, deleteHandler, _handler, viewAsOthers } = props;
 
   const [show, setShow] = useState(false);
   const showModal = () => setShow(true);
@@ -60,20 +60,32 @@ const EduView = (props) => {
   return (
     <Row>
       <Col className="mb-3">
-  <style jsx>{`
-  h2 {
-  text-transform: capitalize;
-  }
-  p {
-    text-transform: capitalize;
-    font-size: 22px;
-  }
-  `}</style>
-        <h2>{education.school}</h2>
-        <p>{education.areaOfStudy}</p>
+        <div className=" d-flex flex-row">
+          <div>
+            <style jsx>{`
+              h2 {
+                text-transform: capitalize;
+              }
+              p {
+                text-transform: capitalize;
+                font-size: 22px;
+              }
+            `}</style>
+
+            <h2>{education.school}</h2>
+            <p>{education.areaOfStudy}</p>
+          </div>
+
+          {!viewAsOthers && (
+            <EditOverLay
+              showModal={showModal}
+              id={education._id}
+              user={user}
+              deleteHandler={deleteHandler}
+            />
+          )}
+        </div>
       </Col>
-      <EditOverLay showModal={showModal} id={education._id} user={user} deleteHandler={deleteHandler}/>
-      {/* <EduModal  {...education} title="Edit Education Detials" _handler={_handler} show={show} closeModel={closeModel} /> */}
     </Row>
   );
 };
@@ -83,7 +95,8 @@ const EducationHistory = ({
   addEducation,
   deleteEdu,
   editEducation,
-  user
+  user,
+  viewAsOthers
 }) => {
   const [show, setShow] = useState(false);
   const showModal = () => setShow(true);
@@ -93,39 +106,47 @@ const EducationHistory = ({
     console.log(data);
     addEducation(user._id, user.token, data);
   };
-  const deleteHandler =(userid, id )=> {
-    console.log(userid, id)
-    deleteEdu(userid, user.token, id)
+  const deleteHandler = (userid, id) => {
+    console.log(userid, id);
+    deleteEdu(userid, user.token, id);
   };
 
-  console.log(show)
+  console.log(show);
   return (
     <Container>
       <Row>
         <Col md={10}>
           <h2>Education History</h2>
         </Col>
-        <Col md={2}>
-          <AddBtn handler={showModal} />
-        </Col>
+        <Col md={2}>{!viewAsOthers && <AddBtn handler={showModal} />}</Col>
       </Row>
       <hr />
       {eduList.map((education, idx) => (
-        <EduView key={idx} education={education} user={user} _handler={formHandler} deleteHandler={deleteHandler} />
+        <EduView
+          key={idx}
+          education={education}
+          user={user}
+          _handler={formHandler}
+          viewAsOthers={viewAsOthers}
+          deleteHandler={deleteHandler}
+        />
       ))}
 
       <EduModal
-       title="Add Education"
-       _handler={formHandler} 
-       show={show} 
-       closeModal={closeModal} />
+        title="Add Education"
+        _handler={formHandler}
+        show={show}
+        closeModal={closeModal}
+      />
     </Container>
   );
 };
 
-const mapStateToProps = (state) => ({ eduList: state.user.education,
-user: state.user
-})
+const mapStateToProps = state => ({
+  eduList: state.user.education,
+  user: state.user,
+  viewAsOthers: state.app.viewAsOthers
+});
 
 const mapDispatchToProps = dispatch => ({
   addEducation: bindActionCreators(updateEdu, dispatch),

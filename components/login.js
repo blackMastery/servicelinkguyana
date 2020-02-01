@@ -8,6 +8,7 @@ const isServer = typeof window === 'undefined'
 
 import { Formik } from "formik";
 import * as Yup from "yup";
+import Registration from "./Signup/signContainer";
 
 
 // import Link from "next/link";
@@ -18,7 +19,7 @@ import { Paper, JobButton, PrimaryBtn } from '../components/utils'
 
 
 const LoginForm = (props) => {
-
+  
     const { handleSubmit, setShow } = props
      console.log(props.errorMessage)
     
@@ -119,16 +120,30 @@ const LoginForm = (props) => {
         
     }
     
-    const { setShow } =  props
-
-    
+    // const { setShow } =  props
+    const [show, setShow] = useState(false);
+    const showModel = () => setShow(true);
+    const closeModel = () => setShow(false);
+    console.log(process.env.NODE_ENV);
+      
 
         return (
-          <LoginForm
-            errorMessage={props.loginError}
-            handleSubmit={handleSubmit}
-            setShow={setShow}
-          />
+          <>
+            <LoginForm
+              errorMessage={props.loginError}
+              handleSubmit={handleSubmit}
+              setShow={showModel}
+            />
+
+            <Modal show={show} onHide={closeModel}>
+              <Modal.Header closeButton>
+                <Modal.Title>Account As </Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Registration />
+              </Modal.Body>
+            </Modal>
+          </>
         );
 } 
 

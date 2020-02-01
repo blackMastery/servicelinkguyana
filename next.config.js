@@ -1,5 +1,10 @@
 // next.config.js
 const withCSS = require("@zeit/next-css");
-module.exports = withCSS({
+const withOffline = require("next-offline");
+
+
+const nextConfig = {
+  // your nextjs config
   cssModules: true
-});
+};
+module.exports = withOffline(nextConfig);

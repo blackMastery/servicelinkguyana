@@ -2,7 +2,14 @@
 import styled, { css } from "styled-components";
 import React, {useState} from 'react'
  
-import {FormControl, FormLabel,Row, Col, Container } from 'react-bootstrap';
+import {
+  FormControl,
+  FormLabel,
+  Row,
+  Col,
+  Container,
+  Button
+} from "react-bootstrap";
 import { useFormik, Form, useField, Formik } from 'formik';
  
 
@@ -164,6 +171,15 @@ export const SecondaryBtn = styled(SaveBtn)`
 
 
 
+
+
+
+
+export const ViewBtn =(props)=> {
+  const {toggle} =props;
+  return <button onClick={toggle}> view as others </button>;
+}
+
 export const EditBtnPencil = ({handler}) => {
   return (
     <div className="edit-overlay" >
@@ -265,7 +281,7 @@ border-radius: 5px;
  display: flex;
  justify-content: space-between;
  align-items: center;
- padding: 8px;
+ padding: 3px;
  
 `;
 
@@ -301,10 +317,10 @@ export const EditIconBtn = ({ showModel }) => (
 )
 
 export const DeleteIconBtn = ({ _delete}) =>(
-  <svg onClick={_delete} width="29" height="22" viewBox="0 0 39 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg onClick={_delete} width="15" height="15" viewBox="0 0 39 42" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M2 10H38L31.2131 42H9.37705L2 10Z" fill="#F80000" />
-    <line x1="-1.31134e-07" y1="6.5" x2="39" y2="6.5" stroke="#F80000" stroke-width="3" />
-    <line x1="10" y1="1.5" x2="29" y2="1.5" stroke="#F80000" stroke-width="3" />
+    <line x1="-1.31134e-07" y1="6.5" x2="39" y2="6.5" stroke="#F80000" strokeWidth="3" />
+    <line x1="10" y1="1.5" x2="29" y2="1.5" stroke="#F80000" strokeWidth="3" />
   </svg>
 
 )

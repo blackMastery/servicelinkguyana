@@ -12,6 +12,9 @@ export const add_education = ({ education: { education}}) =>({
 
 
 
+export const toggleView = () =>({
+    type: types.VIEW_AS_OTHERS
+})
 
 export const chargingRate = (hourRate) =>({
     type: types.HOUR_RATE,

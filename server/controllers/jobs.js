@@ -117,14 +117,16 @@ exports.jobTest = catchAsync( async (req, res, next) =>{
 
 
 exports.getMyJobs = catchAsync( async (req, res, next) => {
-    const { id } = req;
+    const { id } = req.params;
     // const jobs = await Job.aggregate([
     //     {
     //         $match: {user: {$eq: id}}
     //     }
     // ])
 
-    const jobs = await Job.where('user').equals(id)
+    const jobs = await Job.find({user: id})
+
+    // const jobs = await Job.where('user').equals(id)
 
 
     console.log(jobs, id)

@@ -32,8 +32,8 @@ const Avail  = (props) => {
 
   return (
     <div className="d-flex justify-content-start">
-      <strong>Available:</strong>{" "}
-        <span>{availability}</span>
+      <strong className="pr-2">Available: </strong>{" "}
+        <span> {availability}</span>
         <EditBtnPencil handler={open}/>
     </div>
   )

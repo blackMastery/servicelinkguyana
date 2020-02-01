@@ -5,9 +5,8 @@ import Layout from '../layout'
 import { Paper, AddBtn, SaveBtn, SecondaryBtn, JobButton, PrimaryBtn } from '../components/utils'
 import Link from "next/link";
 import Login from '../components/login';
-import Registration from '../components/Signup/signContainer'
 import { userLogin } from "../actions/action";
-
+import { firebaseCloudMessaging} from '../lib/webPush'
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 const Title = styled.h1`
@@ -30,44 +29,38 @@ const LinkText = styled(Link)`
 
 
 
-const Index = ( props ) =>{
-  const [show, setShow] = useState(false);
-  const showModel = () => setShow(true);
-  const closeModel = () => setShow(false);
-  // console.log(process.env.NODE_ENV);
+class Index extends React.Component {
+  componentDidMount() {
+    // firebaseCloudMessaging.init();
+  }
 
-return ( 
-<Layout>
-  <Container>
-      <Row className="justify-content-md-center">
-       <Paper>
-     <Row className="justify-content-md-center">
-         <Col md="auto">
-              <h2>Sign-in</h2>
-         </Col>
-      </Row>
-      <hr/>
-         <Col md="auto">
-            <Login {...props} setShow={setShow}/>
-         </Col>
-         </Paper>
-       </Row>
+  render() {
+    // firebaseCloudMessaging.init()
+ 
 
+    return (
+      <Layout>
+        <Container>
+       <Row className="justify-content-md-center">
+            <Paper>
+              <Row className="justify-content-md-center">
+                <Col md="auto">
+                  <h2>Sign-in</h2>
+                </Col>
+              </Row>
+              <hr />
+              <Col md="auto">
+                <Login {...this.props} />
+              </Col>
+            </Paper>
+          </Row>
 
-      <Modal show={show} onHide={closeModel}>
-        <Modal.Header closeButton>
-          <Modal.Title>Account As </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Registration/>
-        </Modal.Body>
-      </Modal>
-  </Container> 
-
-</Layout>
-)
+         
+        </Container>
+      </Layout>
+    );
+  }
 }
-
 
 
 const mapStateToProps = state => ({

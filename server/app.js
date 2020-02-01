@@ -86,6 +86,30 @@ app.prepare().then(() => {
   server.use(cookieParser());
   server.use(morgan('dev'))
 
+
+
+
+ server.get("../service-worker.js", (req, res) => {
+   app.serveStatic(req, res, "../.next/service-worker.js");
+ });
+
+ const serviceWorkers = [
+   {
+     filename: "service-worker.js",
+     path: "../.next/service-worker.js"
+   },
+   {
+     filename: "firebase-messaging-sw.js",
+     path: "../static/firebase-messaging-sw.js"
+   }
+ ];
+
+ serviceWorkers.forEach(({ filename, path }) => {
+   server.get(`/${filename}`, (req, res) => {
+     app.serveStatic(req, res, path);
+   });
+ });
+
   // server.get("/profile", protected);
   // server.get("/jobfeeds", protected);
   server.use("/api/v1/provider", serviceProvider);

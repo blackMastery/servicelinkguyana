@@ -190,7 +190,7 @@ const NavBar =  (props) => {
 
           <PopoverBody>
             <Nav.Link href="/profile">
-                <PopItem > Profile Veiw </PopItem>
+                <PopItem > Profile View </PopItem>
             </Nav.Link>
             <Nav.Link>
                 <PopItem onClick={_logout}>Log-out </PopItem>

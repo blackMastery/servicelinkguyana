@@ -77,9 +77,9 @@ const SkillForm = ( props ) => {
                             <Col>
                                 <Paper>
                                     <Row>
-                                        {skills.map((skill) => (
+                                        {skills.map((skill, idx) => (
                                             <Col xs="auto">
-                                                <SkillBadge>{skill.name} <Close onClick={()=>reqDelete(skill._id)} >X</Close></SkillBadge>
+                                                <SkillBadge key={idx}>{skill.name} <Close onClick={()=>reqDelete(skill._id)} >X</Close></SkillBadge>
                                             </Col>
                                         ))}
                                     </Row>

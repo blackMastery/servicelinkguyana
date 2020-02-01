@@ -29,7 +29,8 @@ class SkillContainer extends Component {
 
 const mapStateToProps = state => ({
   skills: state.user.skills,
-  user: state.user
+  user: state.user,
+  viewAsOthers: state.app.viewAsOthers
 });
 
 const mapDispatchToProps = (dispatch) => ({

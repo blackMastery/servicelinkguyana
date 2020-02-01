@@ -113,7 +113,7 @@ const SearchForm = (props) => {
         onSubmit: values => {
             const q = values.search
             const filters = processData(R.omit(['search'],values));
-            console.log({q,filters});
+            // console.log({q,filters});
             props.run_search(q,filters)
 
         },

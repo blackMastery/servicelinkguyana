@@ -28,7 +28,8 @@ const EditOverLay = ({ id, deleteHandler }) => {
   //  const _edit = (edu)
   const Overlay = styled.div`
     width: 100%;
-    height: 100%;
+    height: 50%;
+    
     display: flex;
     justify-content: flex-end;
     z-index: 2;
@@ -39,12 +40,25 @@ const EditOverLay = ({ id, deleteHandler }) => {
       opacity: 1;
     }
   `;
-  return <DeleteIconBtn _delete={_delete} />;
+  return ( 
+        <Overlay> 
+              <DeleteIconBtn _delete={_delete} />
+          </Overlay> 
+
+  );
 };
 
 const EmpView = (props) => {
-  const { _id, title, role, description,
-     company, deleteEmployment, user } = props;
+  const {
+    _id,
+    title,
+    role,
+    description,
+    company,
+    deleteEmployment,
+    user,
+    viewAsOthers
+  } = props;
      const _delete = () => {
        deleteEmployment(user._id, user.token, _id);
      }
@@ -52,23 +66,34 @@ const EmpView = (props) => {
   return (
     <Row>
       <Col className="mb-3">
-        <style jsx>{`
-          h2 {
-          text-transform: capitalize;
-          }
-          p {
-            text-transform: capitalize;
-            font-size: 22px;
-          }
-        `}</style>
-        <h2>{company}</h2>
-        <p>{title}</p>
-        <p>{description}</p>
-      </Col>
-      <EditOverLay
-        id={_id}
-        deleteHandler={_delete}
-      />
+        <div className=" d-flex flex-row">
+          <div>
+            <style jsx>{`
+              h2 {
+              text-transform: capitalize;
+              }
+              p {
+                text-transform: capitalize;
+                font-size: 22px;
+              }
+            `}</style>
+            <h2>{company}</h2>
+            <p>{title}</p>
+            <p>{description}</p>
+        </div>
+
+   {
+     !viewAsOthers
+     &&   
+     <EditOverLay
+     id={_id}
+     deleteHandler={_delete}
+     />
+    }
+    </div>
+
+    </Col>
+
     </Row>
   );
 };
@@ -116,26 +141,30 @@ class EmploymentHistory extends React.Component {
   }
    formHandler (data) { 
       console.log(data)
-      const  { user, addEmployment } = this.props; 
+      const  { user, addEmployment  } = this.props; 
       addEmployment(user._id, user.token, data);
   }
 
   render () {
-   const  { empHistory, deleteEmployment, user, addEmployment, updateEmp } = this.props; 
+   const  { empHistory, deleteEmployment, user, addEmployment, viewAsOthers, updateEmp } = this.props; 
   return (
     <Container>
       <Row>
         <Col md={10}>
           <h2>Employment History</h2>
         </Col>
-        <Col md={2}>
-          <AddBtn handler={this.showModal} />
-        </Col>
+        <Col md={2}>{!viewAsOthers && <AddBtn handler={this.showModal} />}</Col>
       </Row>
       <hr />
 
       {empHistory.map((emp, idx) => (
-        <EmpView deleteEmployment={deleteEmployment}  user={user} {...emp} key={idx} />
+        <EmpView
+          deleteEmployment={deleteEmployment}
+          viewAsOthers={viewAsOthers}
+          user={user}
+          {...emp}
+          key={idx}
+        />
       ))}
 
       <EmpModal
@@ -152,7 +181,8 @@ class EmploymentHistory extends React.Component {
 
 
 const mapStateToProps = (state) => ({ empHistory: state.user.employmentHistory,
-user: state.user
+user: state.user,
+viewAsOthers: state.app.viewAsOthers
 })
 
 const mapDispatchToProps = dispatch => ({

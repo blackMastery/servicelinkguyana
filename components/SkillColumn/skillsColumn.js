@@ -17,7 +17,7 @@ const SkillModal = ModalContainer(SkillForm);
 
 
 export const SkillColumn = ( props ) => {
-    const { skills, removeSkill, user, AddSkill } = props;
+    const { skills, removeSkill, user, AddSkill, viewAsOthers } = props;
     const [show, setShow] = useState(false);
     const showModal = () => setShow(true);
     const closeModal = () => setShow(false);
@@ -41,7 +41,10 @@ export const SkillColumn = ( props ) => {
             <h2>Skills</h2>
           </Col>
           <Col md={2}>
+          {
+            !viewAsOthers &&
             <AddBtn handler={showModal} />
+          }
           </Col>
         </Row>
 

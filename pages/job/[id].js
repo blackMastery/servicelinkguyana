@@ -41,81 +41,84 @@ render() {
   console.log(job)
   
   return (
-  <Layout>
-    <Container>
-      <Paper>
-        <Row>
-          <Col md={8}>
-                <h2>{job.title}</h2>
-            <Description>
-                  {job.description}
-            </Description>
+    <Layout>
+      <Container>
+        <Paper>
+          <Row>
+            <Col md={8}>
+              <h2>{job.title}</h2>
+              <Description>{job.description}</Description>
 
-            <hr />
+              <hr />
 
-            <Row>
-              <Col>
-                 <Info>Availability</Info>
-                  <Topic>{job.hourlyRate}</Topic>
-              </Col>
-              <Col>
-                <Info>Project Length</Info>
-                  <Topic>{job.duration}</Topic>
-              </Col>
-              <Col>
-                  <Topic>{job.experienceLevel} Level</Topic>
-              </Col>
+              <Row>
                 <Col>
-                  <Topic>{job.paymentStyle}</Topic>
-                  <Info> <strong>$</strong>{job.cost}</Info>
-
+                  <Info>Availability</Info>
+                  <Topic>{job.hourlyRate}</Topic>
                 </Col>
-            </Row>
+                <Col>
+                  <Info>Project Length</Info>
+                  <Topic>{job.duration}</Topic>
+                </Col>
+                <Col>
+                  <Info>Experience Level </Info>
 
-            <hr />
-            <Topic>Skills and expertise</Topic>
+                  <Topic>{job.experienceLevel} Level</Topic>
+                </Col>
+                <Col>
+                  <Info>{job.paymentStyle}</Info>
+                  <Topic>
+                    {" "}
+                    <strong>$</strong>
+                    {job.cost}
+                  </Topic>
+                </Col>
+              </Row>
 
-            <Row>
-              { job.skills.map((skill) =>(
+              <hr />
+              <Topic>Skills and expertise</Topic>
+
+              <Row>
+                {job.skills.map(skill => (
                   <Col xs="auto">
-                  <JobBadge>{skill}</JobBadge>
+                    <JobBadge>{skill}</JobBadge>
+                  </Col>
+                ))}
+              </Row>
+
+              <hr />
+              <Row>
+                <Col>
+                  <Topic className="pb-3">
+                    <strong>Activity on this job</strong>
+                  </Topic>
+                  <Info>
+                    {" "}
+                    <strong>Proposals: </strong> {job.proposals}
+                  </Info>
+                  <Info>
+                    <strong> Interviewing: </strong> {job.interviewing}{" "}
+                  </Info>
+                  <Info>
+                    <strong> Invites sent: </strong> {job.invitesSent}{" "}
+                  </Info>
+                  <Info>
+                    <strong> Unanswered invites: </strong> {job.interviewing}{" "}
+                  </Info>
                 </Col>
-                ) 
-              )
-           }
-            </Row>
-
-            <hr/>
-            <Row>
-              <Col>
-                  <Topic className="pb-3"> 
-                    <strong> 
-                      Activity on this job
-                    </strong> 
-                    </Topic>
-                  <Info> <strong>Proposals: </strong> {job.proposals}</Info>
-                  <Info><strong> Interviewing: </strong> {job.interviewing} </Info>
-                  <Info><strong> Invites sent: </strong> {job.invitesSent} </Info>
-                  <Info><strong> Unanswered invites: </strong> {job.interviewing} </Info>
-              </Col>
-
-
-
-
-
-            </Row>
-          </Col>
-          <Col md={4}>
-              <Link href='/proposal/[id]' as={`/proposal/${job._id}`}>
-              <JobButton>   Submit Proposal  </JobButton>
+              </Row>
+            </Col>
+            <Col md={4}>
+              <Link href="/proposal/[id]" as={`/proposal/${job._id}`}>
+                <JobButton> Submit Proposal </JobButton>
               </Link>
-            <OwnerView {...job.client} />
-          </Col>
-        </Row>
-      </Paper>
-    </Container>
-  </Layout>
-)
+              <OwnerView {...job.client} />
+            </Col>
+          </Row>
+        </Paper>
+      </Container>
+    </Layout>
+  );
 }
 
 }

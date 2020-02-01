@@ -1,12 +1,12 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import { Row, Col, Container } from "react-bootstrap";
+import { Row, Col, Container, Button } from "react-bootstrap";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { useRouter } from 'next/router';
 
 import { updateUser } from '../api';
-import { updateUserInfo } from '../actions/action';
+import { updateUserInfo, toggleView } from "../actions/action";
 
 
 import Layout from "../layout";
@@ -19,8 +19,10 @@ import {
   JobButton,
   ProfileAv,
   SuccessBar,
-  EditBtnPencil
+  EditBtnPencil,
+  ViewBtn
 } from "../components/utils";
+
 
 import WorkHistory from '../components/history/workhistory'
 import EducationHistory from '../components/history/educationhistory'
@@ -37,29 +39,43 @@ import Rate from '../components/EditModule/editRate'
 
 
 
- function Profile (props) {
-
-   const { firstname, lastname, completedJobs, description } = props.user;
-
-   const updateHandler = async (data) => {
-     const userData = await updateUser(data);
-
-
+ class Profile extends React.Component {
+ 
+   
+   constructor(props){
+     super(props)
+     this.toggle = this.toggle.bind(this)
    }
+    async  updateHandler  (data) {
+        const userData = await updateUser(data);
+    }
+
+    toggle (){
+      console.log("toggle")
+      this.props.toggle_view()
+    }
+
+        
+        render () {
+          const { firstname, lastname, completedJobs, description } = this.props.user;
 
         return (
           <Layout>
             <Container>
-              <Paper>
+              <Paper className="mb-3">
                 <Row>
                   <Col md="auto">
                     <ProfileAv />
                   </Col>
                   <Col md={7}>
                     <div>
-                      <Topic> {firstname} {lastname} </Topic>
+                      <Topic>
+                        {" "}
+                        {firstname} {lastname}{" "}
+                      </Topic>
                       <p>Chaguanas, Trinidad and Tobago </p>
-                      <Availability/>
+                      <Availability />
+                      <ViewBtn toggle={this.toggle} />
                     </div>
                   </Col>
                   <Col md={3}>
@@ -69,7 +85,7 @@ import Rate from '../components/EditModule/editRate'
                   </Col>
                 </Row>
 
-                <hr/>
+                <hr />
 
                 <Row>
                   <style jsx>{`
@@ -93,7 +109,6 @@ import Rate from '../components/EditModule/editRate'
                       color: #000000;
                       text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
                     }
-                   
                   `}</style>
                   <Col md={3}>
                     <div>
@@ -105,68 +120,49 @@ import Rate from '../components/EditModule/editRate'
 
                       <p className="md-text">last job price</p>
 
-                      <Rate/>
+                      <Rate />
 
                       <p className="md-text">Hourly rate</p>
                     </div>
                   </Col>
                   <Col md={9}>
-                    <EditDescription>
-                            {description}
-                    </EditDescription>
+                    <EditDescription>{description}</EditDescription>
                   </Col>
                 </Row>
               </Paper>
 
-             <hr/>
 
-              <Paper>
-              <Row>
+              <Row className="mb-3">
                 <Col>
-                  <WorkHistory/>
+                  <Paper className="mb-3">
+                    <WorkHistory />
+                  </Paper>
                 </Col>
               </Row>
-              </Paper>
 
-
-             <hr/>
-
-              <Paper>
-                <Row>
-                  <Col>
-                    <EducationHistory />
-                  </Col>
-                </Row>
-              </Paper>
-
-                 <hr/>
-
-              <Paper>
-                <Row>
-                  <Col>
-                    <SkillColumn />
-                  </Col>
-                </Row>
-              </Paper>
-
-
-
-              <hr />
-
-              <Paper>
-                <Row>
-                  <Col>
+              <Row className="mb-3">
+                <Col>
+                  <Paper className="mb-3">
                     <EmploymentHistory />
-                  </Col>
-                </Row>
-              </Paper>
+                  </Paper>
+                </Col>
 
+                <Col>
+                  <Paper className="mb-3">
+                    <EducationHistory />
+                  </Paper>
+
+                  <Paper className="mb-3">
+                    <SkillColumn />
+                  </Paper>
+                </Col>
+              </Row>
             </Container>
           </Layout>
         );
     }
 
-
+}
 
 
 
@@ -182,7 +178,8 @@ const mapStateToProps = (state) => ({
   isLogin: state.user.isLogin
 })
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   updateUser: bindActionCreators(updateUserInfo, dispatch),
-})
+  toggle_view: bindActionCreators(toggleView, dispatch)
+});
 export default connect(mapStateToProps, mapDispatchToProps)(Profile)

@@ -22,9 +22,12 @@ const {
   deleteEducation,
   addSkill,
   deleleteSkill,
-  getProposals
+  getProposals,
+ 
 } = require("../../controllers/user");
-const { signup, login, protect } = require("../../controllers/auth");
+const { signup, login,
+   protect, resetPassword,
+  forgotPassword } = require("../../controllers/auth");
 
 
 
@@ -36,6 +39,11 @@ router.get('/test', jobTest)
 router.put("/updateclientinfo/:id", protect, updateDesc);
 
 router.post("/login", login);
+
+
+
+router.patch("/resetpassword/:token", resetPassword);
+router.post("/forgotpassword", forgotPassword);
 
 router.post("/newjob", createJob);
 

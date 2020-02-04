@@ -478,3 +478,56 @@ export const getProposals = (id,token) => {
         })
     }
 }
+
+
+
+export const password_reset = (passwords,token) =>{
+    const path = `${pathClient}/resetpassword/${token}`;
+    return function(dispatch){
+        dispatch({type: types.PASSWORD_RESET_REQUEST})
+        return apiCaller(path, {
+            method: 'PATCH',
+            body: JSON.stringify(passwords),
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
+        })
+        .then((json)=>{
+            return dispatch({type: types.PASSWORD_RESET_COMPLETE})
+
+        })
+        .catch(error=>error)
+    }
+}
+
+
+const caller = ( path, config, onSuccess, onError) => apiCaller(path,config)
+.then((json)=>{
+    console.log(json);
+    return onSuccess()
+})
+.catch((error)=>{
+    console.log(error);
+    return onError()
+})
+
+export const forgot_password = ( email ) => {
+    return (dispatch) =>{
+        dispatch({type: types.FORGOT_PASSWORD_REQUEST})
+        const onSuccess = ()=> dispatch({type: types.FORGOT_PASSWORD_SUCCESS})
+        const onError = () => dispatch({ type: types.FORGOT_PASSWORD_ERROR });
+        const path = `${pathClient}/forgotpassword`
+        const config = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(email)
+        };
+        
+        return caller(path, config, onSuccess, onError)
+    }
+}
+
+
+

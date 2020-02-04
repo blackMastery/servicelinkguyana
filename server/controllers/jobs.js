@@ -14,12 +14,11 @@ const APIFeatures = require('../utils/apiFeatures');
 
 const numericQuery = (query, queryObj) => {
  
-    for (key in queryObj) {
+    for (let key in queryObj) {
         let value = queryObj[key]
         if(value === undefined) return query;
         let [low, high] = value.split('-')
         console.log({ l: low++, h: high++, key })
-
         query = query.gte(key, low++).lte(key, high++)
     }
     return query
@@ -167,8 +166,8 @@ exports.jobSearch = catchAsync(async(req,res,next)=>{
     // console.log(queryObj)    
 
     if(!R.isEmpty(queryObj)){
-        const stringFilters = R.pick(["experienceLevel", "paymentStyle", "jobType"], queryObj);
-        const cost = R.pick('cost', queryObj)
+        const stringFilters = R.pick(["experienceLevel", "paymentStyle", "jobType","duration"], queryObj);
+        const cost = R.pick(['cost'], queryObj)
          console.log(stringFilters, cost)
         query = query.find(stringFilters)
         query = numericQuery(query,cost)
@@ -191,16 +190,6 @@ exports.jobSearch = catchAsync(async(req,res,next)=>{
         resultsLength: searchResults.length,
         jobs
     })
-
-
-
-
-
-
-
-
-
-
 
 })
 

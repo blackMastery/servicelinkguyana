@@ -3,7 +3,8 @@ const factory = require('./handlerFactory');
 const User = require('../models/user')
 const {get} = require('../utils/queryTools')
 const Proposal = require('../models/proposal')
-
+const AppError = require("../utils/appError");
+const Email = require('../utils/emailer');
 
 /**
  * CRUD ROUTES FOR CLIENT

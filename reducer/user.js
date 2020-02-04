@@ -7,6 +7,7 @@ const initialState = {
     isLogin: false,
     loginError: "",
     token: "",
+    resetMessage:"",
     "location": {
         "type": "",
         "coordinates": []
@@ -27,6 +28,11 @@ const initialState = {
 
 const user = (state = initialState, action ) => {
     switch (action.type){
+        case types.FORGOT_PASSWORD_SUCCESS:
+            return Object.assign(state, {
+              resetMessage:
+                "The link to reset your password is been to your email"
+            });
         case types.LOGIN: 
             return Object.assign({}, {...action.user}, {token: action.token}, {isLogin: true});
         case types.LOGOUT:

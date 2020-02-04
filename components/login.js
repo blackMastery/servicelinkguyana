@@ -9,6 +9,7 @@ const isServer = typeof window === 'undefined'
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Registration from "./Signup/signContainer";
+import { forgot_password } from '../actions/action'
 
 
 // import Link from "next/link";
@@ -20,7 +21,7 @@ import { Paper, JobButton, PrimaryBtn } from '../components/utils'
 
 const LoginForm = (props) => {
   
-    const { handleSubmit, setShow } = props
+    const { handleSubmit, setShow, showForgot } = props;
      console.log(props.errorMessage)
     
     return (
@@ -41,7 +42,7 @@ const LoginForm = (props) => {
         }}
       >
         {formik => (
-          <Paper>
+          <>
             <Form onSubmit={formik.handleSubmit}>
               <Form.Group controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
@@ -77,7 +78,9 @@ const LoginForm = (props) => {
               <hr />
             </Form>
             <PrimaryBtn onClick={setShow}>Create An Account</PrimaryBtn>
-          </Paper>
+            <hr />
+            <PrimaryBtn onClick={showForgot}>Forgot Password</PrimaryBtn>
+          </>
         )}
       </Formik>
     );
@@ -85,11 +88,60 @@ const LoginForm = (props) => {
 
 
 
+const dispatchForgotRequest = (dispatch) =>({
+  forgotRequest: bindActionCreators(forgot_password, dispatch)
+})
+
+const mapStateToProps =(state)=>({
+  message: state.user.resetMessage
+})
 
 
-
-
-
+const ForgetForm = connect(
+  mapStateToProps,
+  dispatchForgotRequest
+)(props => {
+  console.log(props)
+  return (
+    <Formik
+      onSubmit={(values, { setSubmitting }) => {
+        console.log(values);
+        props.forgotRequest(values);
+      }}
+      validationSchema={Yup.object({
+        email: Yup.string()
+          .email("Invalid email address")
+          .required("Required")
+      })}
+      initialValues={{
+        email: ""
+      }}
+    >
+      {formik => (
+        <>
+          <Form onSubmit={formik.handleSubmit}>
+            <Form.Group controlId="formBasicEmail">
+              <Form.Label>Email address</Form.Label>
+              <Form.Control
+                required
+                type="email"
+                name="email"
+                placeholder="Enter email"
+                {...formik.getFieldProps("email")}
+                isValid={formik.errors.email}
+              />
+            </Form.Group>
+              <p>{props.message}</p>
+            <JobButton variant="primary" type="submit">
+              Continue
+            </JobButton>
+            <hr />
+          </Form>
+        </>
+      )}
+    </Formik>
+  );
+});
 
 
 
@@ -122,9 +174,17 @@ const LoginForm = (props) => {
     
     // const { setShow } =  props
     const [show, setShow] = useState(false);
+    const [openForget, setForget] = useState(false);
     const showModel = () => setShow(true);
     const closeModel = () => setShow(false);
     console.log(process.env.NODE_ENV);
+
+
+    const showForgot = ()=> setForget(true);
+    const closeForget = ()=> setForget(false);
+
+
+
       
 
         return (
@@ -133,6 +193,7 @@ const LoginForm = (props) => {
               errorMessage={props.loginError}
               handleSubmit={handleSubmit}
               setShow={showModel}
+              showForgot={showForgot}
             />
 
             <Modal show={show} onHide={closeModel}>
@@ -141,6 +202,15 @@ const LoginForm = (props) => {
               </Modal.Header>
               <Modal.Body>
                 <Registration />
+              </Modal.Body>
+            </Modal>
+
+            <Modal show={openForget} onHide={closeForget}>
+              <Modal.Header closeButton>
+                <Modal.Title>Enter your email </Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <ForgetForm />
               </Modal.Body>
             </Modal>
           </>

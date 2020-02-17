@@ -112,29 +112,7 @@ const add_search = (q) =>({
 
 
 
-export const proposal_request = (data, token) => {
-    return function (dispatch) {
 
-        dispatch({type:"SENDING PROPOSAL"})
-
-        return apiCaller('/api/v1/provider/proposal',{
-            method: "POST",
-            headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
-        },
-            body: JSON.stringify(data)
-        })
-        .then((json)=>{
-            console.log(json)
-           return dispatch({type:"PROPOSAL SENT"})
-        })
-        .catch((error)=>{
-            console.log(err);
-            return dispatch({type: "PROPOSAL ERROR"})
-        })
-    }
-}
 
 
 
@@ -504,11 +482,11 @@ export const password_reset = (passwords,token) =>{
 const caller = ( path, config, onSuccess, onError) => apiCaller(path,config)
 .then((json)=>{
     console.log(json);
-    return onSuccess()
+    return onSuccess(json)
 })
 .catch((error)=>{
     console.log(error);
-    return onError()
+    return onError(error)
 })
 
 export const forgot_password = ( email ) => {
@@ -531,3 +509,33 @@ export const forgot_password = ( email ) => {
 
 
 
+
+
+
+
+export const proposal_request = (data, token) => {
+    return function (dispatch) {
+
+        dispatch({ type: "SENDING PROPOSAL" })
+        const onSuccess = (data) => {
+            console.log(data)
+            return dispatch({ type: "PROPOSAL SENT" })
+    }
+        const onError = (error) => {
+            console.log(error)
+            return dispatch({ type: "PROPOSAL ERROR" })
+        };
+        const path =  `/api/v1/provider/proposal`;
+        const config = {
+
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify(data)
+        }
+
+        return caller(path, config, onSuccess, onError);
+    }
+}

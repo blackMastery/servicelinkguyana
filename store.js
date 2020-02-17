@@ -40,7 +40,7 @@ const middlewares = [thunkMiddleware, createLogger()]
 const persistConfig = {
   key: "primary",
   storage,
-  whitelist: ["user"] // place to select which state you want to persist
+  whitelist: ["user","app"] // place to select which state you want to persist
 };
 
 const persistedReducer = persistReducer(persistConfig, reducer);

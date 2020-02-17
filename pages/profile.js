@@ -66,6 +66,7 @@ import Rate from '../components/EditModule/editRate'
                 <Row>
                   <Col md="auto">
                     <ProfileAv />
+                      <ViewBtn toggle={this.toggle} />
                   </Col>
                   <Col md={7}>
                     <div>
@@ -75,7 +76,6 @@ import Rate from '../components/EditModule/editRate'
                       </Topic>
                       <p>Chaguanas, Trinidad and Tobago </p>
                       <Availability />
-                      <ViewBtn toggle={this.toggle} />
                     </div>
                   </Col>
                   <Col md={3}>

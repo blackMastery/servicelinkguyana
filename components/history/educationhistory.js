@@ -111,7 +111,7 @@ const EducationHistory = ({
     deleteEdu(userid, user.token, id);
   };
 
-  console.log(show);
+  console.log({viewAsOthers});
   return (
     <Container>
       <Row>

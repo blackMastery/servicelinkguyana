@@ -12,6 +12,7 @@ const MongoClient = require("mongodb").MongoClient;
 const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
 const User = require('./models/user')
+
 const serviceProvider = require('./routes/provider')
 const clientRoutes = require("./routes/clients");
 const cookieParser = require("cookie-parser");
@@ -54,10 +55,10 @@ if(process.env.NODE_ENV  == 'production'){
     .then(() => console.log('DB connection successful!'));
 
   }else{
-  console.log(DB);
+  // console.log(DB);
   
   mongoose
-    .connect(DB, {
+    .connect(dburl, {
       useNewUrlParser: true,
       useUnifiedTopology: true
       // useCreateIndex: true,

@@ -64,13 +64,16 @@ class ProposalPage extends React.Component {
                   </Col>
                   <Col md={4}>
                     <Topic>{job.experienceLevel}</Topic>
-                    <Info>experience level</Info>
+                    <Info>Experience level</Info>
 
                     <Topic>{job.hourlyRate}</Topic>
                     <Info>Hourly</Info>
 
                     <Topic> {job.duration} </Topic>
                     <Info>Project Length</Info>
+
+                    <Topic> ${job.cost} </Topic>
+                    <Info>Budget</Info>
                   </Col>
                 </Row>
               </Paper>

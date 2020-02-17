@@ -10,7 +10,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import fetch from "isomorphic-unfetch";
 import { apiCaller } from "../../api";
-
+import { MoneySign } from '../../icons/money'
 
 import {
   Paper,
@@ -63,7 +63,7 @@ render() {
                 <Col>
                   <Info>Experience Level </Info>
 
-                  <Topic>{job.experienceLevel} Level</Topic>
+                  <div> <MoneySign/> {job.experienceLevel} Level</div>
                 </Col>
                 <Col>
                   <Info>{job.paymentStyle}</Info>

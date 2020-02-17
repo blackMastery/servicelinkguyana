@@ -177,7 +177,11 @@ export const SecondaryBtn = styled(SaveBtn)`
 
 export const ViewBtn =(props)=> {
   const {toggle} =props;
-  return <button onClick={toggle}> view as others </button>;
+  const handler =() =>{
+    console.log('click event')
+    toggle()
+  }
+  return <button onClick={handler}> view as others </button>;
 }
 
 export const EditBtnPencil = ({handler}) => {
@@ -195,7 +199,7 @@ export const EditBtnPencil = ({handler}) => {
         opacity:0;
         padding-right: 15px;
      }
-      .edit-overlay{
+      .edit-overlay {
       height: 100%;
       width: 100%;
       z-index: 2;

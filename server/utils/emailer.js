@@ -2,6 +2,14 @@ const nodemailer = require('nodemailer');
 const pug = require("pug");
 const htmlToText = require("html-to-text");
 
+
+
+const renderTemplate =( template, options) =>
+     pug.renderFile(`${__dirname}/../templates/email/${template}.pug`, options);
+
+
+
+
 module.exports = class Email {
     constructor(user, url) {
         this.to = user.email;
@@ -42,15 +50,16 @@ module.exports = class Email {
 
     // Send the actual email
     async send(subject, res) {
+        
+        const html = pug.renderFile(
+            `${__dirname}/../templates/email/passwordreset.pug`,
+            {
+                firstName: this.firstName,
+                url: this.url,
+                subject
+            }
+            );
       
-         const html = pug.renderFile(
-           `${__dirname}/../templates/email/passwordreset.pug`,
-           {
-             firstName: this.firstName,
-             url: this.url,
-             subject
-           }
-         );
     try {    // 
         // 2) Define email options
         const mailOptions = {
@@ -59,44 +68,82 @@ module.exports = class Email {
           subject,
           html,
           text: htmlToText.fromString(html)
-
           // text: `Please click the following link: ${this.url} to reset your password`
+
         };
         
         // 3) Create a transport and send email
-        const transporter =  this.newTransport()
-        
-        
-        transporter.verify((error, success) => {
-          if (error) {
-              console.log(error, 57);
-            } else {
-                console.log("Server is ready to take our messages");
-                // return await transporter.sendMail(mailOptions);
-                transporter.sendMail(mailOptions, (err,info) => {
-                    if(err){
-                        console.log(err, ">>> 63")
-                    }
-                     console.log({info})
-                    return res.status(200).json({
-                    status: 'success',
-                    info,
-                    message: 'Token sent to email!'
-                });
+        const onComplete = (err, info) => {
+            if (err) {
+                console.log(err, ">>> 63")
+            }
+            console.log({ info })
+            return res.status(200).json({
+                status: 'success',
+                info,
+                message: 'Token sent to email!'
+            });
 
-                });
-                
-          }
-        });
-    }catch(err){
+        }
+        this.handleTransport(mailOptions, onComplete);
 
-        console.log(err, 50,"<<<<")
+        }catch(err){
+            console.log(err, 50,"<<<<")
+
     }
     
     }
 
     async sendWelcome() {
         await this.send('welcome', 'Welcome to the Natours Family!');
+    }
+    
+
+
+    async handleTransport(options, cb){
+         const transporter =  this.newTransport()
+         transporter.verify((error, success) => {
+          if (error) {
+              console.log(error, 57);
+            } else {
+                transporter.sendMail(options,cb);
+        }
+                
+    });
+
+
+    }
+    async sendProposal(subject,opts, res){
+
+        const options = {
+            clientName: this.firstName,
+            ...opts
+        }
+        const html = renderTemplate('proposals/sentproposal',options);
+        const mailOptions = {
+            from: this.from,
+            to: this.to,
+            subject,
+            html,
+            text: htmlToText.fromString(html)
+        };
+
+        const onComplete = (err, info) => {
+            if (err) {
+                console.log(err, ">>> 63")
+                return res.status(404).json({
+                    status: 'error',
+                    err
+                });
+            }
+            return res.status(200).json({
+                status: 'success',
+                info
+            });
+
+        }
+        this.handleTransport(mailOptions, onComplete)
+        
     }
 
     async sendPasswordReset(res) {
